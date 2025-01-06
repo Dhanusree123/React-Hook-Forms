@@ -1,5 +1,11 @@
+import FormPage from "./Pages/FormPage";
+
 const App = () => {
-  return <div>App</div>;
+  return (
+    <>
+      <FormPage />
+    </>
+  );
 };
 
 export default App;
