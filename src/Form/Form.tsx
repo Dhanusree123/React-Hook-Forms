@@ -5,15 +5,15 @@ import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 
 const schema = z.object({
-  username: z.string().min(1, 'Username is required'),
+  email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters long'),
-  favoriteDog: z.string().min(1, 'Please select your favorite dog'),
+  age: z.string().min(1, 'Please select your age'),
 });
 
 interface FormValues {
-  username: string;
+  email: string;
   password: string;
-  favoriteDog: string;
+  age: number;
 }
 
 const MyForm: React.FC = () => {
@@ -38,9 +38,9 @@ const MyForm: React.FC = () => {
           <h1>User Login</h1>
           <form onSubmit={handleSubmit(onSubmit)} className="form">
             <div className="input-group">
-              <label>Username</label>
-              <input {...register('username')} />
-              {errors.username && <span className="error">{errors.username.message}</span>}
+              <label>Email</label>
+              <input {...register('email')} />
+              {errors.email && <span className="error">{errors.email.message}</span>}
             </div>
             <div className="input-group">
               <label>Password</label>
@@ -48,15 +48,15 @@ const MyForm: React.FC = () => {
               {errors.password && <span className="error">{errors.password.message}</span>}
             </div>
             <div className="input-group">
-              <label>Favorite Dog</label>
-              <select {...register('favoriteDog')}>
-                <option value="">Select your favorite dog</option>
-                <option value="Buddy">Buddy</option>
-                <option value="Rocky">Rocky</option>
-                <option value="Max">Max</option>
-                <option value="Charl">Charlie</option>
+              <label>Age</label>
+              <select {...register('age')}>
+                <option value="">Select your age</option>
+                <option value="0-12">0-12</option>
+                <option value="13-19">13-19</option>
+                <option value="20-60">20-60</option>
+                <option value="Morethan 60"> Morethan 60 </option>
               </select>
-              {errors.favoriteDog && <span className="error">{errors.favoriteDog.message}</span>}
+              {errors.age && <span className="error">{errors.age.message}</span>}
             </div>
             <button type="submit" className="submit-btn">Login</button>
             <a href="#" className="forgot-password">Forgot password?</a>
