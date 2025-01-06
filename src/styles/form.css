@@ -2,7 +2,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: url('https://plus.unsplash.com/premium_photo-1706626270683-96ce29b74b6d?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+    background: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHdrZHNvczQycmF2ODdvM3JnMWUybXpnNThzdzhvb2g1dTBiYzJhbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l3q2RgN7WUjeUUXm0/giphy.webp') no-repeat center center fixed;
     background-size: cover;
     height: 100vh;
     display: flex;
@@ -15,9 +15,9 @@ body {
     width: 100%;
     max-width: 900px;
     height: auto;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(194, 21, 21, 0.929);
     overflow: hidden;
     animation: fadeInContainer 1s ease-in-out;
     justify-content: center;
@@ -31,6 +31,7 @@ body {
     align-items: center;
     padding: 2rem;
     box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.6);
 }
 
 .image-section img {
@@ -49,12 +50,12 @@ body {
 
 h1 {
     margin-bottom: 1rem;
-    color: #840aef;
-    text-align: left;
+    color: #ef5e0a;
+    text-align: center;
     width: 100%;
     font-size: 1.5rem;
     margin-top: 0;
-    text-decoration:underline;
+    text-decoration: underline;
     text-shadow: #0056b3;
     font-style: oblique;
     font-weight: bolder;
@@ -130,7 +131,6 @@ input:focus, select:focus {
     font-size: 0.875rem;
 }
 
-
 @keyframes fadeInContainer {
     from { opacity: 0; transform: scale(0.8); }
     to { opacity: 1; transform: scale(1); }
@@ -140,7 +140,6 @@ input:focus, select:focus {
     from { transform: translateX(100%); }
     to { transform: translateX(0); }
 }
-
 
 @media (max-width: 768px) {
     .container {
