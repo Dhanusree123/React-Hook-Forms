@@ -96,10 +96,18 @@
     padding: 10px 20px;
     border-radius: 20px;
     border: none;
-    background-color: red;
+    background-color: blue;
     color: white;
+    cursor: pointer;
 }
 
 .style-button-cen {
     text-align: center;
+}
+
+.error-msg {
+    color: red;
+    margin-left: 20px;
+    font-size: 16px;
+    margin-bottom: 10px;
 }
