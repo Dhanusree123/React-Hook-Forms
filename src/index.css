@@ -1,0 +1,53 @@
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+body{
+    background-image:linear-gradient(to right,red,green,yellowgreen,pink,yellow,orange,blue)
+}
+label{
+font-weight: bold;
+display: flex;
+margin-bottom: 7px;
+}    
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="data"]{
+    display: block;
+    width: 300px;
+    padding: 6px 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color:#000000;
+    background-color: rgba(4, 14, 14, 0.053);
+    border: 1px solid #514646;
+    border-radius: 5px; 
+}
+    .form-block{
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        height:83vh;
+        padding:70px;
+        background-color: rgba(136, 165, 111, 0.598);
+    }
+    .btn-submit{
+        margin-top: 30px;
+        padding:10px;
+        border-radius: 10px;
+        border:none;
+    }
+    .btn-submit:hover{
+        background-color: #00000058;
+    }
+    .errors{
+        color:red;
+        font-size: 12px;
+
+    }
+
+
+   

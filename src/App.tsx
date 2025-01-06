@@ -1,5 +1,10 @@
+import HookFormD from "./Components/HookFormD";
 const App = () => {
-  return <div>App</div>;
+  return (
+    <>
+      <HookFormD />
+    </>
+  );
 };
 
 export default App;
