@@ -1,5 +1,11 @@
+import TablePage from "./Pages/TablePage";
+
 const App = () => {
-  return <div>App</div>;
+  return (
+    <div>
+      <TablePage />
+    </div>
+  );
 };
 
 export default App;
