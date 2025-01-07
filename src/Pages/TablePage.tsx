@@ -10,7 +10,6 @@ import {
   Card,
   CardContent,
   TablePagination,
-  Divider,
 } from "@mui/material";
 import { tableData } from "../Data/TableData";
 import { useState } from "react";
@@ -79,7 +78,6 @@ const TablePage = () => {
               rowsPerPageOptions={[5, 10, 25]}
             />
           </TableContainer>
-          <Divider variant="middle" flexItem />
         </CardContent>
       </Card>
     </Box>
