@@ -1,10 +1,15 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TablePage from "./Pages/TablePage";
+import MinimalSigninPage from "./Pages/MinimalSigninPage";
 
 const App = () => {
   return (
-    <div>
-      <TablePage />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MinimalSigninPage />} />
+        <Route path="/table" element={<TablePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

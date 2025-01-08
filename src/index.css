@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@-webkit-keyframes spin{
+	100%{-webkit-transform: rotate(360deg);}
+}
+@keyframes spin{
+	100%{-webkit-transform: rotate(360deg);}
+}
