@@ -18,12 +18,25 @@ import {
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { schema, products } from "../components/AddProductsType";
-import { z } from "zod";
-
-type FormData = z.infer<typeof schema>;
+import { IFormData, ProductField, schema } from "../components/AddProductsType";
 
 const AddProductPage = () => {
+  const products: ProductField[] = [
+    { name: "image", label: "Image URL", type: "text" },
+    { name: "title", label: "Title", type: "text" },
+    {
+      name: "description",
+      label: "Description",
+      type: "text",
+      multiline: true,
+      rows: 3,
+    },
+    { name: "mrp", label: "MRP", type: "number" },
+    { name: "ourprice", label: "Our Price", type: "number" },
+    { name: "rating", label: "Rating", type: "number" },
+    { name: "review", label: "Review", type: "text", multiline: true, rows: 3 },
+  ];
+
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -32,8 +45,7 @@ const AddProductPage = () => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm<FormData>({
+  } = useForm<IFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       image: "",
@@ -41,7 +53,7 @@ const AddProductPage = () => {
       description: "",
       mrp: 0,
       ourprice: 0,
-      status: undefined,
+      status: "active",
       rating: 0,
       review: "",
     },
@@ -54,7 +66,7 @@ const AddProductPage = () => {
     return newId;
   };
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: IFormData) => {
     const newProduct = { ...data, id: generateUniqueId() };
     const existingProducts = JSON.parse(
       localStorage.getItem("products") || "[]"
@@ -62,7 +74,7 @@ const AddProductPage = () => {
     existingProducts.push(newProduct);
     localStorage.setItem("products", JSON.stringify(existingProducts));
     setAlertMessage("Product Added Successfully");
-    reset();
+    navigate("/");
   };
 
   useEffect(() => {
@@ -99,82 +111,79 @@ const AddProductPage = () => {
                   {alertMessage && (
                     <Alert severity="success">{alertMessage}</Alert>
                   )}
-                  <Box
+                  <Grid2
                     component="form"
                     noValidate
                     autoComplete="off"
                     onSubmit={handleSubmit(onSubmit)}
+                    direction="column"
+                    container
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
                   >
-                    <Grid2
-                      direction="column"
-                      container
-                      justifyContent="center"
-                      alignItems="center"
-                      spacing={2}
-                    >
-                      {products.map((product, i) => (
-                        <Grid2 key={i}>
-                          <Controller
-                            name={product.name}
-                            control={control}
-                            render={({ field }) => (
-                              <TextField
-                                {...field}
-                                label={product.label}
-                                type={product.type}
-                                multiline
-                                rows={product.rows}
-                                error={Boolean(errors[product.name])}
-                                helperText={
-                                  errors[product.name]
-                                    ? errors[product.name]?.message
-                                    : ""
-                                }
-                                sx={{ width: { xs: 300, sm: 400 } }}
-                              />
-                            )}
-                          />
-                        </Grid2>
-                      ))}
-                      <Grid2 container justifyContent="flex-start">
-                        <FormControl
-                          component="fieldset"
-                          error={Boolean(errors.status)}
-                        >
-                          <FormLabel>Status</FormLabel>
-                          <Controller
-                            name="status"
-                            control={control}
-                            defaultValue=""
-                            render={({ field }) => (
-                              <RadioGroup row {...field}>
-                                <FormControlLabel
-                                  value="active"
-                                  control={<Radio />}
-                                  label="Active"
-                                />
-                                <FormControlLabel
-                                  value="inactive"
-                                  control={<Radio />}
-                                  label="Inactive"
-                                />
-                              </RadioGroup>
-                            )}
-                          />
-                          {errors.status && (
-                            <Box color="error.main" mt={1}>
-                              {errors.status.message}
-                            </Box>
+                    {products.map((product, i) => (
+                      <Grid2 key={i}>
+                        <Controller
+                          name={product.name}
+                          control={control}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label={product.label}
+                              type={product.type}
+                              multiline
+                              rows={product.rows}
+                              error={Boolean(errors[product.name])}
+                              helperText={
+                                errors[product.name]
+                                  ? errors[product.name]?.message
+                                  : ""
+                              }
+                              sx={{ width: { xs: 300, sm: 400 } }}
+                            />
                           )}
-                        </FormControl>
+                        />
                       </Grid2>
-                      <Grid2>
-                        <Button type="submit" variant="contained">
-                          Add
-                        </Button>
-                      </Grid2>
+                    ))}
+                    <Grid2 container justifyContent="flex-start">
+                      <FormControl
+                        component="fieldset"
+                        error={Boolean(errors.status)}
+                      >
+                        <FormLabel>Status</FormLabel>
+                        <Controller
+                          name="status"
+                          control={control}
+                          defaultValue="active"
+                          render={({ field }) => (
+                            <RadioGroup row {...field}>
+                              <FormControlLabel
+                                value="active"
+                                control={<Radio />}
+                                label="Active"
+                              />
+                              <FormControlLabel
+                                value="inactive"
+                                control={<Radio />}
+                                label="Inactive"
+                              />
+                            </RadioGroup>
+                          )}
+                        />
+                        {errors.status && (
+                          <Box color="error.main" mt={1}>
+                            {errors.status.message}
+                          </Box>
+                        )}
+                      </FormControl>
                     </Grid2>
-                  </Box>
+                    <Grid2>
+                      <Button type="submit" variant="contained">
+                        Add
+                      </Button>
+                    </Grid2>
+                  </Grid2>
                 </Stack>
               </CardContent>
             </Card>

@@ -10,18 +10,7 @@ import {
   Grid2,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-
-type Product = {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-  mrp: number;
-  ourprice: number;
-  rating: number;
-  status: "active" | "inactive";
-  reviews?: string[];
-};
+import { Product } from "../components/AddProductsType";
 
 const ProductDetailsPage = () => {
   const navigate = useNavigate();
@@ -65,9 +54,13 @@ const ProductDetailsPage = () => {
                 {product.description}
               </Typography>
               <Typography variant="h5" color="text.secondary">
-                <span style={{ textDecoration: "line-through", color: "red" }}>
+                <Typography
+                  variant="body1"
+                  sx={{ textDecoration: "line-through", color: "red" }}
+                  component="span"
+                >
                   ₹{product.mrp}
-                </span>
+                </Typography>
                 Our Price: ₹{product.ourprice}
               </Typography>
               <Rating value={product.rating} precision={0.5} readOnly />

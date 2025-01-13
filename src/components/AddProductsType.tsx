@@ -1,11 +1,23 @@
 import { z } from "zod";
 
-type ProductField = {
-  name: keyof FormData;
+export type ProductField = {
+  name: keyof IFormData;
   label: string;
   type: "text" | "number" | "radio";
   multiline?: boolean;
   rows?: number;
+};
+
+export type Product = {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
+  mrp: number;
+  ourprice: number;
+  rating: number;
+  status: "active" | "inactive";
+  reviews?: string[];
 };
 
 export const schema = z
@@ -32,20 +44,4 @@ export const schema = z
     path: ["ourprice"],
   });
 
-type FormData = z.infer<typeof schema>;
-
-export const products: ProductField[] = [
-  { name: "image", label: "Image URL", type: "text" },
-  { name: "title", label: "Title", type: "text" },
-  {
-    name: "description",
-    label: "Description",
-    type: "text",
-    multiline: true,
-    rows: 3,
-  },
-  { name: "mrp", label: "MRP", type: "number" },
-  { name: "ourprice", label: "Our Price", type: "number" },
-  { name: "rating", label: "Rating", type: "number" },
-  { name: "review", label: "Review", type: "text", multiline: true, rows: 3 },
-];
+export type IFormData = z.infer<typeof schema>;

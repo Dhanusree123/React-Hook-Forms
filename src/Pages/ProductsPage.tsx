@@ -10,17 +10,8 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Product } from "../components/AddProductsType";
 
-type Product = {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-  mrp: number;
-  ourprice: number;
-  status: "active" | "inactive";
-  rating: number;
-};
 const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -59,7 +50,7 @@ const ProductsPage = () => {
           <Box>
             <Button
               variant="contained"
-              onClick={() => navigate("/add/product")}
+              onClick={() => navigate("/product/add")}
             >
               Add Product
             </Button>
