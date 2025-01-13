@@ -7,6 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
 
 type Product = {
   productId: string;
@@ -24,13 +25,25 @@ const ProductsPage = () => {
   const [products, setProducts] = useState<Product[] | []>([]);
   const navigate = useNavigate();
 
-  const handleProduct = (productId: Product) => {
-    navigate(`/product=${productId}`);
+  const handleProduct = (productId: string) => {
+    navigate(`/product/${productId}`);
+  };
+
+  const handleDelete = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    productId: string
+  ) => {
+    e.stopPropagation();
+    const updatedProducts = products.filter(
+      (product) => product.productId !== productId
+    );
+    setProducts(updatedProducts);
+    localStorage.setItem("Products", JSON.stringify(updatedProducts));
   };
 
   useEffect(() => {
     if (productData) {
-      setProducts([JSON.parse(productData)]);
+      setProducts(JSON.parse(productData));
     }
   }, [productData]);
 
@@ -47,10 +60,11 @@ const ProductsPage = () => {
             <TableCell align="right">Availability</TableCell>
           </TableRow>
         </TableHead>
+
         <TableBody>
           {products.map((row) => (
             <TableRow
-              onClick={() => handleProduct}
+              onClick={() => handleProduct(row.productId)}
               key={row.productId}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
@@ -62,6 +76,14 @@ const ProductsPage = () => {
               <TableCell align="right">{row.dealPrize}</TableCell>
               <TableCell align="right">{row.rating}</TableCell>
               <TableCell align="right">{row.availability}</TableCell>
+              <TableCell>
+                <Button
+                  variant="outlined"
+                  onClick={(e) => handleDelete(e, row.productId)}
+                >
+                  Delete
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

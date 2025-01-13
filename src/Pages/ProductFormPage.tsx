@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import * as z from "zod";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   productId: z.string().min(1, { message: "Product ID is required" }),
@@ -39,7 +39,7 @@ const schema = z.object({
 type Iproduct = z.infer<typeof schema>;
 
 const AddProductForm = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     control,
     handleSubmit,
@@ -48,14 +48,23 @@ const AddProductForm = () => {
     resolver: zodResolver(schema),
   });
 
+  // const productData = localStorage.getItem("Products");
+  // const dataP: Iproduct[] = JSON.parse(productData ?? "") ?? [];
+  // console.log(dataP);
+  // const onSubmit = (data: Iproduct) => {
+  //   console.log([data]);
+  //   dataP.push(data);
+  //   localStorage.setItem("Products", JSON.stringify(dataP));
+  //   // navigate("/products");
+  // };
+
   const productData = localStorage.getItem("Products");
-  const dataP: Iproduct[] = JSON.parse(productData ?? "") ?? [];
-  console.log(dataP);
+  const parsedProducts: Iproduct[] = productData
+    ? JSON.parse(productData ?? "")
+    : [];
   const onSubmit = (data: Iproduct) => {
-    console.log([data]);
-    dataP.push(data);
-    localStorage.setItem("Products", JSON.stringify(dataP));
-    // navigate("/products");
+    localStorage.setItem("Products", JSON.stringify([...parsedProducts, data]));
+    navigate("/products");
   };
 
   return (
