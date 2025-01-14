@@ -28,10 +28,10 @@ const schema = z.object({
     (val) => Number(val),
     z.number().min(1, { message: "Deal Prize should be a positive number" })
   ),
-  rating: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1).max(5, { message: "Rating should be between 1 and 5" })
-  ),
+  rating: z.coerce
+    .number()
+    .min(1)
+    .max(5, { message: "Rating should be between 1 and 5" }),
   category: z.enum(["furniture", "fashion", "electricals"]),
   availability: z.enum(["available", "not-available"]),
 });
@@ -47,16 +47,6 @@ const AddProductForm = () => {
   } = useForm<Iproduct>({
     resolver: zodResolver(schema),
   });
-
-  // const productData = localStorage.getItem("Products");
-  // const dataP: Iproduct[] = JSON.parse(productData ?? "") ?? [];
-  // console.log(dataP);
-  // const onSubmit = (data: Iproduct) => {
-  //   console.log([data]);
-  //   dataP.push(data);
-  //   localStorage.setItem("Products", JSON.stringify(dataP));
-  //   // navigate("/products");
-  // };
 
   const productData = localStorage.getItem("Products");
   const parsedProducts: Iproduct[] = productData
