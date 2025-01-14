@@ -1,7 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  TextField,
   Button,
   Select,
   MenuItem,
@@ -13,30 +12,9 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import * as z from "zod";
 import { useNavigate } from "react-router-dom";
-
-const schema = z.object({
-  productId: z.string().min(1, { message: "Product ID is required" }),
-  description: z.string().min(1, { message: "Description is required" }),
-  review: z.string().min(1, { message: "Review is required" }),
-  mrp: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1, { message: "MRP should be a positive number" })
-  ),
-  dealPrize: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1, { message: "Deal Prize should be a positive number" })
-  ),
-  rating: z.coerce
-    .number()
-    .min(1)
-    .max(5, { message: "Rating should be between 1 and 5" }),
-  category: z.enum(["furniture", "fashion", "electricals"]),
-  availability: z.enum(["available", "not-available"]),
-});
-
-type Iproduct = z.infer<typeof schema>;
+import { IProduct, NewProductSchema } from "../Types/product";
+import TextFieldController from "../components/TextFieldController";
 
 const AddProductForm = () => {
   const navigate = useNavigate();
@@ -44,16 +22,23 @@ const AddProductForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Iproduct>({
-    resolver: zodResolver(schema),
+  } = useForm<IProduct>({
+    resolver: zodResolver(NewProductSchema),
   });
 
   const productData = localStorage.getItem("Products");
-  const parsedProducts: Iproduct[] = productData
+  console.log(productData);
+  const parsedProducts: IProduct[] = productData
     ? JSON.parse(productData ?? "")
     : [];
-  const onSubmit = (data: Iproduct) => {
-    localStorage.setItem("Products", JSON.stringify([...parsedProducts, data]));
+  const onSubmit = (data: IProduct) => {
+    console.log(data);
+    const newData = { ...data, productId: crypto.randomUUID() };
+    localStorage.setItem(
+      "Products",
+      JSON.stringify([...parsedProducts, newData])
+    );
+    console.log(newData);
     navigate("/products");
   };
 
@@ -63,99 +48,42 @@ const AddProductForm = () => {
         Add Product
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="productId"
-          defaultValue=""
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Product ID"
-              fullWidth
-              margin="normal"
-              error={!!errors.productId}
-              helperText={errors.productId?.message}
-            />
-          )}
-        />
-        <Controller
+        <TextFieldController
           name="description"
-          defaultValue=""
           control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Description"
-              fullWidth
-              margin="normal"
-              error={!!errors.description}
-              helperText={errors.description?.message}
-            />
-          )}
+          helperText={errors.description?.message}
         />
-        <Controller
+        <TextFieldController
           name="review"
-          defaultValue=""
           control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Review"
-              fullWidth
-              margin="normal"
-              error={!!errors.review}
-              helperText={errors.review?.message}
-            />
-          )}
+          helperText={errors.review?.message}
         />
-        <Controller
+        <TextFieldController
           name="mrp"
-          defaultValue={0}
+          type="number"
           control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="MRP"
-              type="number"
-              fullWidth
-              margin="normal"
-              error={!!errors.mrp}
-              helperText={errors.mrp?.message}
-            />
-          )}
+          helperText={errors.mrp?.message}
         />
-        <Controller
+        <TextFieldController
           name="dealPrize"
-          defaultValue={0}
+          type="number"
           control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Deal Prize"
-              type="number"
-              fullWidth
-              margin="normal"
-              error={!!errors.dealPrize}
-              helperText={errors.dealPrize?.message}
-            />
-          )}
+          helperText={errors.dealPrize?.message}
         />
-        <Controller
+        <TextFieldController
           name="rating"
-          defaultValue={0}
+          type="number"
           control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Rating"
-              type="number"
-              fullWidth
-              margin="normal"
-              error={!!errors.rating}
-              helperText={errors.rating?.message}
-            />
-          )}
+          helperText={errors.rating?.message}
         />
+
+        <TextFieldController
+          name="shoppingsite"
+          type="string"
+          control={control}
+          helperText={errors.shoppingsite?.message}
+        />
+
         <Controller
           name="category"
           defaultValue="fashion"
