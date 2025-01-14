@@ -9,16 +9,14 @@ import {
   Stack,
   Grid2,
 } from "@mui/material";
-import { Product } from "../components/AddProductsType";
+import { IFormData } from "../Types/Product";
 
 const ProductDetailsPage = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const products = JSON.parse(localStorage.getItem("products") ?? "");
-  const product = products.find(
-    (product: Product) => product.id === Number(id)
-  );
+  const product = products.find((product: IFormData) => product.id === id);
 
   return (
     <Grid2

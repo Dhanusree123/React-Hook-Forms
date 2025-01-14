@@ -6,27 +6,32 @@ import {
   CardMedia,
   Rating,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Product } from "../components/AddProductsType";
+import { useCallback, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
+import { IFormData } from "../Types/Product";
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<IFormData[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     const updatedProducts = products.filter((product) => product.id !== id);
-    const resequencedProducts = updatedProducts.map((product, index) => ({
-      ...product,
-      id: index + 1,
-    }));
-    const lastId = resequencedProducts.length;
-    localStorage.setItem("lastId", lastId.toString());
-    setProducts(resequencedProducts);
-    localStorage.setItem("products", JSON.stringify(resequencedProducts));
+    setProducts(updatedProducts);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
+
+  const locationSearch = useCallback(() => {
+    const parsed = queryString.parse(location.search);
+    if (parsed.search) {
+      setSearchQuery(parsed.search as string);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const storedProductData = localStorage.getItem("products");
@@ -34,6 +39,19 @@ const ProductsPage = () => {
       setProducts(JSON.parse(storedProductData));
     }
   }, []);
+
+  useEffect(() => {
+    locationSearch();
+  }, [locationSearch]);
+
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    navigate(`?search=${e.target.value}`);
+  };
 
   return (
     <Stack>
@@ -46,7 +64,17 @@ const ProductsPage = () => {
         <Typography variant="h5" gutterBottom>
           Products
         </Typography>
-        {products.map((product) => (
+        <Box>
+          <TextField
+            label="Search Products"
+            variant="outlined"
+            margin="normal"
+            sx={{ width: { xs: 300, sm: 400 } }}
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </Box>
+        {filteredProducts.map((product) => (
           <Card
             key={product.id}
             sx={{

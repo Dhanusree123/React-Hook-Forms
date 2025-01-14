@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Alert,
   Box,
   Button,
   Card,
@@ -12,40 +11,23 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { IFormData, ProductField, schema } from "../components/AddProductsType";
+import { IFormData, NewProductSchema } from "../Types/Product";
+import AddProductTextField from "../components/AddProductTextField";
+import SelectControl from "../components/SelectField";
 
 const AddProductPage = () => {
-  const products: ProductField[] = [
-    { name: "image", label: "Image URL", type: "text" },
-    { name: "title", label: "Title", type: "text" },
-    {
-      name: "description",
-      label: "Description",
-      type: "text",
-      multiline: true,
-      rows: 3,
-    },
-    { name: "mrp", label: "MRP", type: "number" },
-    { name: "ourprice", label: "Our Price", type: "number" },
-    { name: "rating", label: "Rating", type: "number" },
-    { name: "review", label: "Review", type: "text", multiline: true, rows: 3 },
-  ];
-
   const navigate = useNavigate();
-  const [alertMessage, setAlertMessage] = useState<string>("");
 
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(NewProductSchema),
     defaultValues: {
       image: "",
       title: "",
@@ -58,19 +40,13 @@ const AddProductPage = () => {
     },
   });
 
-  const generateUniqueId = (): number => {
-    const lastId = localStorage.getItem("lastId");
-    const newId = lastId ? Number(lastId) + 1 : 1;
-    localStorage.setItem("lastId", newId.toString());
-    return newId;
-  };
-
   const onSubmit = (data: IFormData) => {
-    const newProduct = { ...data, id: generateUniqueId() };
-    const existingProducts = JSON.parse(localStorage.getItem("products") ?? "");
+    const newProduct = { ...data, id: crypto.randomUUID() };
+    const existingProducts = JSON.parse(
+      localStorage.getItem("products") ?? "[]"
+    );
     existingProducts.push(newProduct);
     localStorage.setItem("products", JSON.stringify(existingProducts));
-    setAlertMessage("Product Added Successfully");
     navigate("/");
   };
 
@@ -95,7 +71,6 @@ const AddProductPage = () => {
               <Typography variant="h5" gutterBottom>
                 Add Product
               </Typography>
-              {alertMessage && <Alert severity="success">{alertMessage}</Alert>}
               <Grid2
                 component="form"
                 noValidate
@@ -107,30 +82,70 @@ const AddProductPage = () => {
                 alignItems="center"
                 spacing={2}
               >
-                {products.map((product, i) => (
-                  <Grid2 key={i}>
-                    <Controller
-                      name={product.name}
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          label={product.label}
-                          type={product.type}
-                          multiline
-                          rows={product.rows}
-                          error={Boolean(errors[product.name])}
-                          helperText={
-                            errors[product.name]
-                              ? errors[product.name]?.message
-                              : ""
-                          }
-                          sx={{ width: { xs: 300, sm: 400 } }}
-                        />
-                      )}
-                    />
-                  </Grid2>
-                ))}
+                <AddProductTextField
+                  name="image"
+                  label="Image URL"
+                  type="text"
+                  control={control}
+                  errors={errors}
+                />
+                <AddProductTextField
+                  name="title"
+                  label="Title"
+                  type="text"
+                  control={control}
+                  errors={errors}
+                />
+                <AddProductTextField
+                  name="description"
+                  label="Description"
+                  type="text"
+                  multiline={true}
+                  rows={3}
+                  control={control}
+                  errors={errors}
+                />
+                <AddProductTextField
+                  name="mrp"
+                  label="MRP"
+                  type="number"
+                  control={control}
+                  errors={errors}
+                />
+                <AddProductTextField
+                  name="ourprice"
+                  label="Our Price"
+                  type="number"
+                  control={control}
+                  errors={errors}
+                />
+                <SelectControl
+                  control={control}
+                  name="selectfield"
+                  label="Category"
+                  options={[
+                    { value: "furniture", label: "Furniture" },
+                    { value: "fashion", label: "Fashion" },
+                    { value: "electronics", label: "Electronics" },
+                  ]}
+                  errors={errors}
+                />
+                <AddProductTextField
+                  name="rating"
+                  label="Rating"
+                  type="number"
+                  control={control}
+                  errors={errors}
+                />
+                <AddProductTextField
+                  name="review"
+                  label="Review"
+                  type="text"
+                  multiline={true}
+                  rows={3}
+                  control={control}
+                  errors={errors}
+                />
                 <Grid2 container justifyContent="flex-start">
                   <FormControl
                     component="fieldset"
