@@ -15,8 +15,8 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { IFormData, NewProductSchema } from "../Types/Product";
-import AddProductTextField from "../components/AddProductTextField";
+import { IProduct, NewProductSchema } from "../Types/Product";
+import ProductTextField from "../components/ProductTextField";
 import SelectControl from "../components/SelectField";
 
 const AddProductPage = () => {
@@ -26,7 +26,7 @@ const AddProductPage = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormData>({
+  } = useForm<IProduct>({
     resolver: zodResolver(NewProductSchema),
     defaultValues: {
       image: "",
@@ -40,7 +40,7 @@ const AddProductPage = () => {
     },
   });
 
-  const onSubmit = (data: IFormData) => {
+  const onSubmit = (data: IProduct) => {
     const newProduct = { ...data, id: crypto.randomUUID() };
     const existingProducts = JSON.parse(
       localStorage.getItem("products") ?? "[]"
@@ -82,21 +82,21 @@ const AddProductPage = () => {
                 alignItems="center"
                 spacing={2}
               >
-                <AddProductTextField
+                <ProductTextField
                   name="image"
                   label="Image URL"
                   type="text"
                   control={control}
                   errors={errors}
                 />
-                <AddProductTextField
+                <ProductTextField
                   name="title"
                   label="Title"
                   type="text"
                   control={control}
                   errors={errors}
                 />
-                <AddProductTextField
+                <ProductTextField
                   name="description"
                   label="Description"
                   type="text"
@@ -105,14 +105,14 @@ const AddProductPage = () => {
                   control={control}
                   errors={errors}
                 />
-                <AddProductTextField
+                <ProductTextField
                   name="mrp"
                   label="MRP"
                   type="number"
                   control={control}
                   errors={errors}
                 />
-                <AddProductTextField
+                <ProductTextField
                   name="ourprice"
                   label="Our Price"
                   type="number"
@@ -130,14 +130,14 @@ const AddProductPage = () => {
                   ]}
                   errors={errors}
                 />
-                <AddProductTextField
+                <ProductTextField
                   name="rating"
                   label="Rating"
                   type="number"
                   control={control}
                   errors={errors}
                 />
-                <AddProductTextField
+                <ProductTextField
                   name="review"
                   label="Review"
                   type="text"

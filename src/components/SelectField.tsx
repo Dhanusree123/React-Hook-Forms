@@ -3,16 +3,16 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import { IFormData } from "../Types/Product";
+import { IProduct } from "../Types/Product";
 import { Box } from "@mui/material";
 
 type SelectControlProps = {
-  name: keyof IFormData;
+  name: keyof IProduct;
   label: string;
   options: { value: string; label: string }[];
   defaultValue?: string;
-  control: Control<IFormData>;
-  errors: FieldErrors<IFormData>;
+  control: Control<IProduct>;
+  errors: FieldErrors<IProduct>;
 };
 
 const SelectControl = ({

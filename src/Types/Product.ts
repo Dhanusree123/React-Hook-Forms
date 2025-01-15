@@ -15,11 +15,10 @@ export const ProductSchema = z
     review: z.string().optional(),
     selectfield: z.string().nonempty("This field is required."),
   })
-export const Schema = ProductSchema.refine((data) => data.ourprice < data.mrp, {
-    message: "OurPrice should be less than MRP",
-    path: ["ourprice"],
-  });
 
-export const NewProductSchema = ProductSchema.omit({id: true});
+export const NewProductSchema = ProductSchema.omit({id: true}).refine((data) => data.ourprice < data.mrp, {
+  message: "OurPrice should be less than MRP",
+  path: ["ourprice"],
+});
 
-export type IFormData = z.infer<typeof ProductSchema>;
+export type IProduct = z.infer<typeof ProductSchema>;

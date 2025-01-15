@@ -12,13 +12,20 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
-import { IFormData } from "../Types/Product";
+import { IProduct } from "../Types/Product";
+import CheckboxControl from "../components/CheckboxControl";
+import UseDebounce from "../components/UseDebounce";
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState<IFormData[]>([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
   const navigate = useNavigate();
+
   const location = useLocation();
+
+  const debouncedSearchQuery = UseDebounce(searchQuery, 500);
 
   const handleDelete = (id: string) => {
     const updatedProducts = products.filter((product) => product.id !== id);
@@ -26,12 +33,43 @@ const ProductsPage = () => {
     localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
+  const filteredProducts = products.filter(
+    (product) =>
+      product.title
+        .toLowerCase()
+        .includes(debouncedSearchQuery.toLowerCase()) &&
+      (selectedCategories.length === 0 ||
+        selectedCategories.includes(product.selectfield))
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCategoryChange = (selectedOptions: string[]) => {
+    setSelectedCategories(selectedOptions);
+    navigate(
+      `?search=${debouncedSearchQuery}&categories=${selectedOptions.join(",")}`
+    );
+  };
+
   const locationSearch = useCallback(() => {
     const parsed = queryString.parse(location.search);
     if (parsed.search) {
       setSearchQuery(parsed.search as string);
     }
+    if (parsed.selectfiels) {
+      setSelectedCategories(
+        typeof parsed.selectfield === "string"
+          ? parsed.selectfield.split(",")
+          : []
+      );
+    }
   }, [location.search]);
+
+  useEffect(() => {
+    navigate(`?search=${debouncedSearchQuery}`);
+  }, [debouncedSearchQuery, navigate]);
 
   useEffect(() => {
     const storedProductData = localStorage.getItem("products");
@@ -43,15 +81,6 @@ const ProductsPage = () => {
   useEffect(() => {
     locationSearch();
   }, [locationSearch]);
-
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    navigate(`?search=${e.target.value}`);
-  };
 
   return (
     <Stack>
@@ -72,6 +101,19 @@ const ProductsPage = () => {
             sx={{ width: { xs: 300, sm: 400 } }}
             value={searchQuery}
             onChange={handleSearchChange}
+          />
+        </Box>
+        <Box>
+          <Typography variant="h6" gutterBottom>
+            Categories
+          </Typography>
+          <CheckboxControl
+            options={[
+              { value: "furniture", label: "Furniture" },
+              { value: "fashion", label: "Fashion" },
+              { value: "electronics", label: "Electronics" },
+            ]}
+            onChange={handleCategoryChange}
           />
         </Box>
         {filteredProducts.map((product) => (

@@ -1,18 +1,18 @@
 import { Controller, Control, FieldErrors } from "react-hook-form";
 import { TextField } from "@mui/material";
-import { IFormData } from "../Types/Product";
+import { IProduct } from "../Types/Product";
 
 type AddProductTextFieldProps = {
-  name: keyof IFormData;
+  name: keyof IProduct;
   label: string;
   type: "text" | "number" | "radio";
   multiline?: boolean;
   rows?: number;
-  control: Control<IFormData>;
-  errors: FieldErrors<IFormData>;
+  control: Control<IProduct>;
+  errors: FieldErrors<IProduct>;
 };
 
-const AddProductTextField = ({
+const ProductTextField = ({
   name,
   label,
   type,
@@ -43,4 +43,4 @@ const AddProductTextField = ({
   );
 };
 
-export default AddProductTextField;
+export default ProductTextField;
