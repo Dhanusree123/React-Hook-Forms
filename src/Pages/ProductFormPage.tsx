@@ -24,6 +24,9 @@ const AddProductForm = () => {
     formState: { errors },
   } = useForm<IProduct>({
     resolver: zodResolver(NewProductSchema),
+    defaultValues: {
+      shoppingsite: "",
+    },
   });
 
   const productData = localStorage.getItem("Products");

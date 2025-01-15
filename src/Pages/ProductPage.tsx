@@ -11,7 +11,6 @@ import { IProduct } from "../Types/product";
 
 const ProductPage = () => {
   const navigate = useNavigate();
-  // const location = useLocation();
   const { id: productId } = useParams<{ id: string }>();
 
   const productData: IProduct[] = JSON.parse(

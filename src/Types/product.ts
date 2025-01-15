@@ -20,3 +20,9 @@ export const ProductSchema = z.object({
 export const NewProductSchema = ProductSchema.omit({ productId: true });
 
 export type IProduct = z.infer<typeof ProductSchema>;
+
+
+// .refine((data)=>data.dealPrize<data.mrp,{
+//   message:"Deal prize must be lessthan MRP",
+//   path:["dealprize"],
+// });

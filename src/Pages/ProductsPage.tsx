@@ -37,7 +37,7 @@ const ProductsPage = () => {
 
   const searchedProducts = searchQuery
     ? products.filter((product) =>
-        product.shoppingsite.toLowerCase().includes(searchQuery.toLowerCase())
+        product.category.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : products;
 
@@ -94,10 +94,10 @@ const ProductsPage = () => {
                 productId,
                 category,
                 description,
+                shoppingsite,
                 dealPrize,
                 rating,
                 availability,
-                shoppingsite,
               } = row;
               console.log(shoppingsite);
               return (
