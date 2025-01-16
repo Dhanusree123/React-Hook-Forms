@@ -5,25 +5,34 @@ import {
   CardContent,
   CardMedia,
   Rating,
+  SelectChangeEvent,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import queryString from "query-string";
 import { IProduct } from "../Types/Product";
 import CheckboxControl from "../components/CheckboxControl";
 import UseDebounce from "../components/UseDebounce";
+import SortBy from "../components/SortBy";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState("");
 
   const navigate = useNavigate();
 
   const location = useLocation();
+
+  const { search, categories, sort } = useParams<{
+    search?: string;
+    categories?: string;
+    sort?: string;
+  }>();
 
   const debouncedSearchQuery = UseDebounce(searchQuery, 500);
 
@@ -33,7 +42,21 @@ const ProductsPage = () => {
     localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
-  const filteredProducts = products.filter(
+  const handleSortChange = (event: SelectChangeEvent) => {
+    setSortBy(event.target.value);
+  };
+
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortBy === "price-asc") {
+      return a.ourprice - b.ourprice;
+    } else if (sortBy === "price-desc") {
+      return b.ourprice - a.ourprice;
+    } else {
+      return a.title.localeCompare(b.title);
+    }
+  });
+
+  const filteredProducts = sortedProducts.filter(
     (product) =>
       product.title
         .toLowerCase()
@@ -44,29 +67,53 @@ const ProductsPage = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    navigate(
-      `?search=${e.target.value}&categories=${selectedCategories.join(",")}`
-    );
+    let queryString = "";
+    if (e.target.value) {
+      queryString += `?search=${e.target.value}`;
+    }
+    if (selectedCategories.length > 0) {
+      queryString += `${
+        queryString ? "&" : "?"
+      }categories=${selectedCategories.join(",")}`;
+    }
+    navigate(queryString);
   };
 
   const handleCategoryChange = (selectedOptions: string[]) => {
     setSelectedCategories(selectedOptions);
-    navigate(`?search=${searchQuery}&categories=${selectedOptions.join(",")}`);
+    let queryString = "";
+    if (searchQuery) {
+      queryString += `?search=${searchQuery}`;
+    }
+    if (selectedOptions.length > 0) {
+      queryString += `${
+        queryString ? "&" : "?"
+      }categories=${selectedOptions.join(",")}`;
+    }
+    navigate(queryString);
   };
 
   const locationSearch = useCallback(() => {
-    const parsed = queryString.parse(location.search);
+    const parsed = queryString.parse(
+      location.search ||
+        `?search=${search || ""}&categories=${categories || ""}&sort=${
+          sort || ""
+        }`
+    );
     if (parsed.search) {
       setSearchQuery(parsed.search as string);
     }
-    if (parsed.selectfield) {
+    if (parsed.categories) {
       setSelectedCategories(
-        typeof parsed.selectfield === "string"
-          ? parsed.selectfield.split(",")
+        typeof parsed.categories === "string"
+          ? parsed.categories.split(",")
           : []
       );
     }
-  }, [location.search]);
+    if (parsed.sort) {
+      setSortBy(parsed.sort as string);
+    }
+  }, [location.search, search, categories, sort]);
 
   useEffect(() => {
     const storedProductData = localStorage.getItem("products");
@@ -78,6 +125,10 @@ const ProductsPage = () => {
   useEffect(() => {
     locationSearch();
   }, [locationSearch]);
+
+  useEffect(() => {
+    console.log("debouncedSearchQuery:", debouncedSearchQuery);
+  }, [debouncedSearchQuery]);
 
   return (
     <Stack>
@@ -113,6 +164,7 @@ const ProductsPage = () => {
             onChange={handleCategoryChange}
           />
         </Box>
+        <SortBy sortBy={sortBy} handleSortChange={handleSortChange} />
         {filteredProducts.map((product) => (
           <Card
             key={product.id}

@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { IProduct, NewProductSchema } from "../Types/Product";
 import ProductTextField from "../components/ProductTextField";
 import SelectControl from "../components/SelectField";
+import { toast } from "sonner";
 
 const AddProductPage = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const AddProductPage = () => {
     );
     existingProducts.push(newProduct);
     localStorage.setItem("products", JSON.stringify(existingProducts));
+    toast.success("Product added successfully.");
     navigate("/");
   };
 
