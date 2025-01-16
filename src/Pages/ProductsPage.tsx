@@ -44,13 +44,14 @@ const ProductsPage = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    navigate(
+      `?search=${e.target.value}&categories=${selectedCategories.join(",")}`
+    );
   };
 
   const handleCategoryChange = (selectedOptions: string[]) => {
     setSelectedCategories(selectedOptions);
-    navigate(
-      `?search=${debouncedSearchQuery}&categories=${selectedOptions.join(",")}`
-    );
+    navigate(`?search=${searchQuery}&categories=${selectedOptions.join(",")}`);
   };
 
   const locationSearch = useCallback(() => {
@@ -66,10 +67,6 @@ const ProductsPage = () => {
       );
     }
   }, [location.search]);
-
-  useEffect(() => {
-    navigate(`?search=${debouncedSearchQuery}`);
-  }, [debouncedSearchQuery, navigate]);
 
   useEffect(() => {
     const storedProductData = localStorage.getItem("products");
