@@ -59,7 +59,7 @@ const ProductsPage = () => {
     if (parsed.search) {
       setSearchQuery(parsed.search as string);
     }
-    if (parsed.selectfiels) {
+    if (parsed.selectfield) {
       setSelectedCategories(
         typeof parsed.selectfield === "string"
           ? parsed.selectfield.split(",")
