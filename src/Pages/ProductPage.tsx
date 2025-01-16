@@ -17,11 +17,11 @@ const ProductPage = () => {
     localStorage.getItem("Products") ?? "[]"
   );
 
-  const sorted = productData.find(
-    (sorted: IProduct) => sorted.productId === productId
+  const product = productData.find(
+    (product: IProduct) => product.productId === productId
   );
 
-  if (!sorted) {
+  if (!product) {
     return <Typography>Product not found</Typography>;
   }
 
@@ -36,20 +36,20 @@ const ProductPage = () => {
           Go Back
         </Button>
         <Container component={Paper} sx={{ padding: 4, marginTop: 4 }}>
-          <Typography variant="h4">{sorted.description}</Typography>
-          <Typography variant="h4">{sorted.shoppingsite}</Typography>
-          <Typography variant="subtitle1">Review:{sorted.review}</Typography>
-          <Typography variant="body1">MRP: {sorted.mrp}</Typography>
+          <Typography variant="h4">{product.description}</Typography>
+          <Typography variant="h4">{product.shoppingsite}</Typography>
+          <Typography variant="subtitle1">Review:{product.review}</Typography>
+          <Typography variant="body1">MRP: {product.mrp}</Typography>
           <Typography variant="body1">
-            Deal Price: {sorted.dealPrize}
+            Deal Price: {product.dealPrice}
           </Typography>
           <Typography variant="body1">
             Rating:
-            <Rating value={sorted.rating} />
+            <Rating value={product.rating} />
           </Typography>
-          <Typography variant="body1">Category: {sorted.category}</Typography>
+          <Typography variant="body1">Category: {product.category}</Typography>
           <Typography variant="body1">
-            Availability: {sorted.availability}
+            Availability: {product.availability}
           </Typography>
         </Container>
       </Card>
