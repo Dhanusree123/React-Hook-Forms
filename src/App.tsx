@@ -7,7 +7,7 @@ import { Toaster } from "sonner";
 const App = () => {
   return (
     <BrowserRouter>
-      <Toaster position="top-right" />
+      <Toaster position="top-right" richColors />
       <Routes>
         <Route path="/" element={<ProductsPage />} />
         <Route path="/product/add" element={<AddProductPage />} />

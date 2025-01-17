@@ -28,11 +28,7 @@ const ProductsPage = () => {
 
   const location = useLocation();
 
-  const { search, categories, sort } = useParams<{
-    search?: string;
-    categories?: string;
-    sort?: string;
-  }>();
+  const { search, categories, sort } = useParams();
 
   const debouncedSearchQuery = UseDebounce(searchQuery, 500);
 
@@ -40,10 +36,6 @@ const ProductsPage = () => {
     const updatedProducts = products.filter((product) => product.id !== id);
     setProducts(updatedProducts);
     localStorage.setItem("products", JSON.stringify(updatedProducts));
-  };
-
-  const handleSortChange = (event: SelectChangeEvent) => {
-    setSortBy(event.target.value);
   };
 
   const sortedProducts = [...products].sort((a, b) => {
@@ -76,6 +68,9 @@ const ProductsPage = () => {
         queryString ? "&" : "?"
       }categories=${selectedCategories.join(",")}`;
     }
+    if (sortBy) {
+      queryString += `${queryString ? "&" : "?"}sort=${sortBy}`;
+    }
     navigate(queryString);
   };
 
@@ -89,6 +84,26 @@ const ProductsPage = () => {
       queryString += `${
         queryString ? "&" : "?"
       }categories=${selectedOptions.join(",")}`;
+    }
+    if (sortBy) {
+      queryString += `${queryString ? "&" : "?"}sort=${sortBy}`;
+    }
+    navigate(queryString);
+  };
+
+  const handleSortChange = (event: SelectChangeEvent) => {
+    setSortBy(event.target.value);
+    let queryString = "";
+    if (searchQuery) {
+      queryString += `?search=${searchQuery}`;
+    }
+    if (selectedCategories.length > 0) {
+      queryString += `${
+        queryString ? "&" : "?"
+      }categories=${selectedCategories.join(",")}`;
+    }
+    if (event.target.value) {
+      queryString += `${queryString ? "&" : "?"}sort=${event.target.value}`;
     }
     navigate(queryString);
   };

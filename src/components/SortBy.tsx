@@ -1,5 +1,4 @@
 import { Select, MenuItem, Typography, SelectChangeEvent } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
 
 type SortByProps = {
   sortBy: string;
@@ -7,29 +6,6 @@ type SortByProps = {
 };
 
 const SortBy = ({ sortBy, handleSortChange }: SortByProps) => {
-  const navigate = useNavigate();
-
-  const { search, categories } = useParams<{
-    search?: string;
-    categories?: string;
-  }>();
-
-  const updateUrl = (sort: string) => {
-    let queryString = `?sort=${sort}`;
-    if (search) {
-      queryString += `&search=${search}`;
-    }
-    if (categories) {
-      queryString += `&categories=${categories}`;
-    }
-    navigate(queryString || "/");
-  };
-
-  const handleSort = (event: SelectChangeEvent) => {
-    handleSortChange(event);
-    updateUrl(event.target.value);
-  };
-
   return (
     <div>
       <Typography variant="h6" gutterBottom>
@@ -37,7 +13,7 @@ const SortBy = ({ sortBy, handleSortChange }: SortByProps) => {
       </Typography>
       <Select
         value={sortBy}
-        onChange={handleSort}
+        onChange={handleSortChange}
         displayEmpty
         inputProps={{ "aria-label": "Sort By" }}
       >
