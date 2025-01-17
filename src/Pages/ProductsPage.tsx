@@ -4,38 +4,24 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  IconButton,
-  Input,
-} from "@mui/material";
+import { Button, FormGroup, IconButton, Input } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { IProduct } from "../Types/product";
 import SearchIcon from "@mui/icons-material/Search";
+import SortIcon from "@mui/icons-material/Sort";
 import InputAdornment from "@mui/material/InputAdornment";
-import queryString from "query-string";
-
-const debounce = (func: any, delay: number) => {
-  let timeoutId: any;
-  return function (this: any, ...args: any[]) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      func.apply(this, args);
-    }, delay);
-  };
-};
+import UseDebounce from "../components/UseDebounce";
+import CheckBoxController from "../components/CheckBoxController";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState<IProduct[] | []>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
-  const productData = localStorage.getItem("Products") ?? "";
+  const productData = localStorage.getItem("products") ?? "";
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,57 +31,62 @@ const ProductsPage = () => {
       (product) => product.productId !== productId
     );
     setProducts(updatedProducts);
-    localStorage.setItem("Products", JSON.stringify(updatedProducts));
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
-  const searchedProducts = products.filter(
+  const debouncedSearchQuery = UseDebounce(searchQuery, 500);
+
+  const handleSort = () => {
+    const newDirection = sortDirection === "desc" ? "asc" : "desc";
+    setSortDirection(newDirection);
+    const sortedProducts = [...products].sort((a, b) => {
+      return newDirection === "asc"
+        ? a.dealPrice - b.dealPrice
+        : b.dealPrice - a.dealPrice;
+    });
+    setProducts(sortedProducts);
+  };
+
+  const filteredProducts = products.filter(
     (product) =>
-      product.shoppingsite.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      product.shoppingsite
+        .toLowerCase()
+        .includes(debouncedSearchQuery.toLowerCase()) &&
       (selectedValues.length === 0 || selectedValues.includes(product.category))
   );
 
-  const debouncedHandleSearchChange = debounce(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const val = event.target.value;
-      setSearchQuery(val);
-      console.log(val);
-      const filters = selectedValues.join(",");
-      navigate(`?search=${val}&filters=${filters}`);
-    },
-    300
-  );
-
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    debouncedHandleSearchChange({
-      ...event,
-      target: { ...event.target, value },
-    });
+    setSearchQuery(event.target.value);
   };
 
   const handleProduct = (productId: string) => {
     navigate(`/product/${productId}`);
   };
 
-  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const updatedValues = event.target.checked
-      ? [...selectedValues, value]
-      : selectedValues.filter((item) => item !== value);
+  const handleFilterChange = (selected: string) => {
+    const updatedValues = selectedValues.includes(selected)
+      ? selectedValues.filter((item) => item !== selected)
+      : [...selectedValues, selected];
     setSelectedValues(updatedValues);
-    const search = searchQuery;
-    navigate(`?search=${search}&filters=${updatedValues.join(",")}`);
   };
 
   useEffect(() => {
-    const parsed = queryString.parse(location.search);
-    if (parsed.search) {
-      setSearchQuery(parsed.search as string);
-    }
-    if (parsed.filters) {
-      setSelectedValues((parsed.filters as string).split(","));
-    }
+    const params = new URLSearchParams(location.search);
+    setSearchQuery(params.get("search") || "");
+    setSelectedValues(
+      (params.get("category") || "").split(",").filter(Boolean)
+    );
+    setSortDirection((params.get("sort") as "asc" | "desc") || "desc");
   }, [location.search]);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (searchQuery) params.set("search", searchQuery);
+    if (selectedValues.length > 0)
+      params.set("category", selectedValues.join(","));
+    if (sortDirection) params.set("sort", sortDirection);
+    navigate(`?${params.toString()}`, { replace: true });
+  }, [searchQuery, selectedValues, sortDirection, navigate]);
 
   useEffect(() => {
     if (productData) {
@@ -103,25 +94,31 @@ const ProductsPage = () => {
     }
   }, [productData]);
 
+  useEffect(() => {
+    console.log("debounced", debouncedSearchQuery);
+  }, [debouncedSearchQuery]);
+
   return (
     <Grid container>
       <Grid size={{ xs: 12, md: 2, lg: 1 }} sx={{ mt: 6 }}>
         <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox value="furniture" onChange={handleFilterChange} />
-            }
+          <CheckBoxController
+            value="furniture"
+            onChange={handleFilterChange}
             label="Furniture"
+            checked={selectedValues.includes("furniture")}
           />
-          <FormControlLabel
-            control={<Checkbox value="fashion" onChange={handleFilterChange} />}
+          <CheckBoxController
+            value="fashion"
+            onChange={handleFilterChange}
             label="Fashion"
+            checked={selectedValues.includes("fashion")}
           />
-          <FormControlLabel
-            control={
-              <Checkbox value="electricals" onChange={handleFilterChange} />
-            }
+          <CheckBoxController
+            value="electricals"
+            onChange={handleFilterChange}
             label="Electricals"
+            checked={selectedValues.includes("electricals")}
           />
         </FormGroup>
       </Grid>
@@ -148,7 +145,12 @@ const ProductsPage = () => {
                 <TableCell align="center">Category</TableCell>
                 <TableCell align="center">Description</TableCell>
                 <TableCell align="center">Shopping Site</TableCell>
-                <TableCell align="center">DealPrice</TableCell>
+                <TableCell align="center">
+                  DealPrice
+                  <IconButton onClick={handleSort}>
+                    <SortIcon />
+                  </IconButton>
+                </TableCell>
                 <TableCell align="center">Rating</TableCell>
                 <TableCell align="center">Availability</TableCell>
                 <TableCell align="center">Actions</TableCell>
@@ -156,7 +158,7 @@ const ProductsPage = () => {
             </TableHead>
 
             <TableBody>
-              {searchedProducts.map((row) => {
+              {filteredProducts.map((row) => {
                 const {
                   productId,
                   category,
@@ -202,4 +204,5 @@ const ProductsPage = () => {
     </Grid>
   );
 };
+
 export default ProductsPage;

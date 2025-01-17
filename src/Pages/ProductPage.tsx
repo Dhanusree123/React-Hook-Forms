@@ -14,7 +14,7 @@ const ProductPage = () => {
   const { id: productId } = useParams<{ id: string }>();
 
   const productData: IProduct[] = JSON.parse(
-    localStorage.getItem("Products") ?? "[]"
+    localStorage.getItem("products") ?? "[]"
   );
 
   const product = productData.find(

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TextField } from '@mui/material';
-import { Controller } from 'react-hook-form';
+import { TextField } from "@mui/material";
+import { Controller } from "react-hook-form";
 
 type Props = {
   name: string;
@@ -14,7 +14,7 @@ const TextFieldController = (props: Props) => {
   return (
     <Controller
       name={name}
-      defaultValue=''
+      defaultValue=""
       control={control}
       render={({ field, fieldState: { error } }) => (
         <TextField
@@ -22,7 +22,7 @@ const TextFieldController = (props: Props) => {
           label={name}
           type={type}
           fullWidth
-          margin='normal'
+          margin="normal"
           error={error ? true : false}
           helperText={helperText}
         />

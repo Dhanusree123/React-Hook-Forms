@@ -15,6 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { IProduct, NewProductSchema } from "../Types/product";
 import TextFieldController from "../components/TextFieldController";
+import { toast } from "sonner";
 
 const AddProductForm = () => {
   const navigate = useNavigate();
@@ -26,16 +27,17 @@ const AddProductForm = () => {
     resolver: zodResolver(NewProductSchema),
   });
 
-  const productData = localStorage.getItem("Products");
+  const productData = localStorage.getItem("products");
   const parsedProducts: IProduct[] = productData
     ? JSON.parse(productData ?? "")
     : [];
   const onSubmit = (data: IProduct) => {
     const newData = { ...data, productId: crypto.randomUUID() };
     localStorage.setItem(
-      "Products",
+      "products",
       JSON.stringify([...parsedProducts, newData])
     );
+    toast.success("Form submitted successfully");
     navigate("/products");
   };
 
