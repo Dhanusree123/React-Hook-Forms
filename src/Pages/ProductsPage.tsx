@@ -36,7 +36,8 @@ const ProductsPage = () => {
 
   const debouncedSearchQuery = UseDebounce(searchQuery, 500);
 
-  const handleSort = () => {
+  const handleSort = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSortDirection((e.target.value as "desc") || "asc");
     const newDirection = sortDirection === "desc" ? "asc" : "desc";
     setSortDirection(newDirection);
     const sortedProducts = [...products].sort((a, b) => {
@@ -77,6 +78,17 @@ const ProductsPage = () => {
       (params.get("category") || "").split(",").filter(Boolean)
     );
     setSortDirection((params.get("sort") as "asc" | "desc") || "desc");
+
+    const sortParam = params.get("sort");
+    if (sortParam) {
+      setProducts((prevProducts) =>
+        [...prevProducts].sort((a, b) => {
+          return sortParam === "asc"
+            ? a.dealPrice - b.dealPrice
+            : b.dealPrice - a.dealPrice;
+        })
+      );
+    }
   }, [location.search]);
 
   useEffect(() => {
@@ -147,7 +159,7 @@ const ProductsPage = () => {
                 <TableCell align="center">Shopping Site</TableCell>
                 <TableCell align="center">
                   DealPrice
-                  <IconButton onClick={handleSort}>
+                  <IconButton onClick={() => handleSort}>
                     <SortIcon />
                   </IconButton>
                 </TableCell>
