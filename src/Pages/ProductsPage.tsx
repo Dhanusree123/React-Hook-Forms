@@ -5,7 +5,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, FormGroup, IconButton, Input } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { IProduct } from "../Types/product";
@@ -31,17 +31,22 @@ const CATEGORIES = [
 ];
 
 const ProductsPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+
   const [products, setProducts] = useState<IProduct[] | []>(
     JSON.parse(localStorage.getItem("products") ?? "") ?? []
   );
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc" | null>(
-    null
+  const [searchQuery, setSearchQuery] = useState<string>(
+    params.get("search") || ""
   );
-
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    params.get("category")?.split(",") || []
+  );
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc" | null>(
+    (params.get("sort") as "asc" | "desc" | null) || null
+  );
 
   const handleDelete = (productId: string) => {
     const updatedProducts = products.filter(
@@ -63,7 +68,7 @@ const ProductsPage = () => {
   );
 
   const sortedProducts = sortDirection
-    ? [...products].sort((a, b) => {
+    ? [...filteredProducts].sort((a, b) => {
         return sortDirection === "asc"
           ? a.dealPrice - b.dealPrice
           : b.dealPrice - a.dealPrice;
@@ -79,6 +84,7 @@ const ProductsPage = () => {
     const params = new URLSearchParams(location.search);
     params.set("sort", newDirection);
     navigate(`?${params.toString()}`);
+    setSortDirection(newDirection);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,20 +115,9 @@ const ProductsPage = () => {
     } else {
       params.delete("category");
     }
+    setSelectedCategories(updatedValues);
     navigate(`?${params.toString()}`);
   };
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const search = params.get("search") || "";
-    const category = params.get("category")?.split(",") || [];
-    const sort = params.get("sort") as "asc" | "desc" | null;
-    setSearchQuery(search);
-    setSelectedCategories(category);
-    if (sort) {
-      setSortDirection(sort);
-    }
-  }, [location.search]);
 
   return (
     <Grid container>
@@ -164,7 +159,7 @@ const ProductsPage = () => {
                 <TableCell align="center">Shopping Site</TableCell>
                 <TableCell align="center">
                   DealPrice
-                  <IconButton onClick={() => handleSort}>
+                  <IconButton onClick={handleSort}>
                     <SortIcon />
                   </IconButton>
                 </TableCell>
