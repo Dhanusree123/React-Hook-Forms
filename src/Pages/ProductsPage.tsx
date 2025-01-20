@@ -5,7 +5,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, FormGroup, IconButton, Input } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { IProduct } from "../Types/product";
@@ -92,7 +92,6 @@ const ProductsPage = () => {
     const params = new URLSearchParams(location.search);
     if (value) {
       params.set("search", value);
-      console.log(params.toString());
     } else {
       params.delete("search");
     }
@@ -119,6 +118,10 @@ const ProductsPage = () => {
     navigate(`?${params.toString()}`);
   };
 
+  useEffect(() => {
+    console.log("Clicked", debouncedSearchQuery);
+  }, [debouncedSearchQuery]);
+
   return (
     <Grid container>
       <Grid size={{ xs: 12, md: 2, lg: 1 }} sx={{ mt: 6 }}>
@@ -138,7 +141,7 @@ const ProductsPage = () => {
         <Button onClick={() => navigate("/")}>Add Products</Button>
         <TableContainer>
           <Input
-            placeholder="Search by Shopping site"
+            placeholder="Search by description"
             fullWidth
             value={searchQuery}
             onChange={handleSearchChange}
