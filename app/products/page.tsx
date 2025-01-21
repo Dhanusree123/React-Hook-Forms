@@ -45,9 +45,7 @@ const SITE = [
 const ProductTable = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // console.log("searchParams", searchParams);
   const params = new URLSearchParams(searchParams.toString());
-  // console.log(params);
 
   const [products, setProducts] = useState<ProductFormData[]>(
     JSON.parse(localStorage.getItem("products") ?? "") ?? []
@@ -122,7 +120,6 @@ const ProductTable = () => {
       ? selectedSites.filter((item) => item !== selected)
       : [...selectedSites, selected];
 
-    const params = new URLSearchParams(location.search);
     if (updatedValues.length) {
       params.set("shoppingSite", updatedValues.join(","));
     } else {
