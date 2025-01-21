@@ -1,8 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProductFormData, ProductSchema } from "./ProductSchema";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
@@ -12,6 +11,8 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid2";
 import { Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { NewProductSchema, ProductFormData } from "../types/ProductSchema";
 
 const ProductForm = () => {
   const {
@@ -19,7 +20,7 @@ const ProductForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<ProductFormData>({
-    resolver: zodResolver(ProductSchema),
+    resolver: zodResolver(NewProductSchema),
     defaultValues: {
       productTitle: "",
       productDescription: "",
@@ -31,23 +32,29 @@ const ProductForm = () => {
     },
   });
 
-  const [products, setProducts] = useState<ProductFormData[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
-    const productData = localStorage.getItem("products");
-    const parsedProducts: ProductFormData[] = productData
-      ? JSON.parse(productData)
-      : [];
-    setProducts(parsedProducts);
-  }, []);
-
+  const productData = localStorage.getItem("products");
+  const parsedProducts: ProductFormData[] = productData
+    ? JSON.parse(productData ?? "")
+    : [];
   const onSubmit = (data: ProductFormData) => {
-    const newData = { ...data };
-    const updatedProducts = [...products, newData];
-    setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-    router.push("/pages");
+    if (data.shoppingSite === "select a shopping site") {
+      toast.error("Please select a shoppingsite");
+      return;
+    }
+    try {
+      toast.success("Data saved successfully");
+      const newData = { ...data, productId: crypto.randomUUID() };
+      localStorage.setItem(
+        "products",
+        JSON.stringify([...parsedProducts, newData])
+      );
+      router.push("/products");
+    } catch {
+      toast.error("Check the details you entered is correct or not");
+      return;
+    }
   };
 
   return (
@@ -70,7 +77,6 @@ const ProductForm = () => {
             helperText={errors.productTitle?.message}
             margin="normal"
           />
-
           <TextField
             label="Product Description"
             {...register("productDescription")}
@@ -78,7 +84,6 @@ const ProductForm = () => {
             helperText={errors.productDescription?.message}
             margin="normal"
           />
-
           <TextField
             label="Reviews"
             type="number"
@@ -87,7 +92,6 @@ const ProductForm = () => {
             helperText={errors.reviews?.message}
             margin="normal"
           />
-
           <TextField
             label="MRP"
             {...register("mrp")}
@@ -95,7 +99,6 @@ const ProductForm = () => {
             helperText={errors.mrp?.message}
             margin="normal"
           />
-
           <TextField
             label="Deal Price"
             type="number"
@@ -104,7 +107,6 @@ const ProductForm = () => {
             helperText={errors.dealPrice?.message}
             margin="normal"
           />
-
           <TextField
             label="Rating"
             type="number"
@@ -113,7 +115,6 @@ const ProductForm = () => {
             helperText={errors.rating?.message}
             margin="normal"
           />
-
           <FormControl margin="normal" error={!!errors.shoppingSite}>
             <Select
               {...register("shoppingSite")}
@@ -129,7 +130,6 @@ const ProductForm = () => {
               <MenuItem value="instagram">Instagram</MenuItem>
             </Select>
           </FormControl>
-
           <Button type="submit" variant="contained" color="primary">
             ADD
           </Button>
