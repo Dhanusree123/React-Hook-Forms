@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 
 type ProductKeys = keyof IProduct;
 const AddProductPage = () => {
@@ -79,12 +79,25 @@ const AddProductPage = () => {
     );
     existingProducts.push(newProduct);
     localStorage.setItem("products", JSON.stringify(existingProducts));
-    toast.success("Producted added successfully.");
-    router.push("/");
+    toast.success("Product added successfully.");
+    router.push("/products");
   };
 
   return (
     <Grid2 container>
+      <Toaster position="top-right" richColors />
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          p: 2,
+        }}
+      >
+        <Button variant="contained" onClick={() => router.push("/products")}>
+          View Products
+        </Button>
+      </Box>
       <Grid2 size={{ xs: 12 }}>
         <Card sx={{ width: { xs: "100%", sm: "500px" } }}>
           <CardContent>
