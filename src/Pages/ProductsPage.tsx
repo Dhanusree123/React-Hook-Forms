@@ -16,7 +16,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const CATGORIES = [
@@ -29,19 +30,27 @@ const CATGORIES = [
 ];
 
 const ProductsPage = () => {
+  const searchParams = useSearchParams();
+
+  const params = new URLSearchParams(searchParams?.toString());
+
   const [products, setProducts] = useState<IProduct[]>(
-    JSON.parse(localStorage.getItem("products") ?? "[]")
+    JSON.parse(localStorage.getItem("products") ?? "")
   );
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [sortPrice, setSortPrice] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>(
+    params.get("search") || ""
+  );
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(
+    params.get("category")?.split(",") || []
+  );
+  const [sortPrice, setSortPrice] = useState<string>(params.get("sort") || "");
 
   const router = useRouter();
 
   const handleDelete = (id: string) => {
     const updatedProducts = products.filter((product) => product.id !== id);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
     setProducts(updatedProducts);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
   const debouncedSearch = useDebounce(searchQuery, 500);
@@ -49,8 +58,8 @@ const ProductsPage = () => {
   const filteredProducts = products.filter(
     (product) =>
       product.title.toLowerCase().includes(debouncedSearch.toLowerCase()) &&
-      (selectedCategories.length === 0 ||
-        selectedCategories.includes(product.selectfield))
+      (selectedOptions.length === 0 ||
+        selectedOptions.includes(product.selectfield))
   );
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -67,15 +76,38 @@ const ProductsPage = () => {
   });
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+    const value = e.target.value;
+    if (value) {
+      params.set("search", value);
+    } else {
+      params.delete("search");
+    }
+    setSearchQuery(value);
+    router.push(`?${params.toString()}`);
   };
 
-  const handleCategoryChange = (selectedOptions: string[]) => {
-    setSelectedCategories(selectedOptions);
+  const handleCheckboxChange = (value: string) => {
+    const updatedOptions = selectedOptions.includes(value)
+      ? selectedOptions.filter((option) => option !== value)
+      : [...selectedOptions, value];
+    if (updatedOptions.length) {
+      params.set("category", updatedOptions.join(","));
+    } else {
+      params.delete("category");
+    }
+    setSelectedOptions(updatedOptions);
+    router.push(`?${params.toString()}`);
   };
 
   const handleSortChange = (e: SelectChangeEvent) => {
-    setSortPrice(e.target.value);
+    const value = e.target.value;
+    if (value) {
+      params.set("sort", value);
+    } else {
+      params.delete("sort");
+    }
+    setSortPrice(value);
+    router.push(`?${params.toString()}`);
   };
 
   useEffect(() => {
@@ -83,7 +115,7 @@ const ProductsPage = () => {
   }, [debouncedSearch]);
 
   return (
-    <Stack>
+    <Stack alignItems="center">
       <Box>
         <Button variant="contained" onClick={() => router.push("/product/add")}>
           Add product
@@ -105,58 +137,61 @@ const ProductsPage = () => {
             key={category.value}
             label={category.label}
             value={category.value}
-            onChange={handleCategoryChange}
-            checked={selectedCategories.includes(category.value)}
+            onChange={handleCheckboxChange}
+            checked={selectedOptions.includes(category.value)}
           />
         ))}
       </Box>
       <Sorting sortPrice={sortPrice} handleSortChange={handleSortChange} />
       {sortedProducts.map((product) => (
-        <Card
-          key={product.id}
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            m: 2,
-            width: { xs: "100%", sm: "600px", md: "800px" },
-            cursor: "pointer",
-          }}
-        >
-          <CardMedia
-            component="img"
+        <Link href={`/product/${product.id}`} key={product.id}>
+          <Card
+            key={product.id}
             sx={{
-              width: { xs: "100%", sm: 150 },
-              height: { xs: 150, sm: "auto" },
-              objectFit: "cover",
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              m: 2,
+              width: { xs: "100%", sm: "600px", md: "800px" },
+              cursor: "pointer",
             }}
-            image={product.image}
-            alt={product.title}
-          />
-          <Stack spacing={2} flexGrow={1} justifyContent="center">
-            <CardContent>
-              <Typography variant="h6">{product.title}</Typography>
-              <Typography variant="body2" color="text.secondary">
-                {product.description}
-              </Typography>
-              <Typography variant="h6">
-                Our Price: ₹{product.ourprice}
-              </Typography>
-              <Rating value={product.rating} precision={0.5} readOnly />
-            </CardContent>
-          </Stack>
-          <Stack alignItems="center" justifyContent="center" p={2}>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(product.id);
+          >
+            <CardMedia
+              component="img"
+              sx={{
+                width: { xs: "100%", sm: 150 },
+                height: { xs: 150, sm: "auto" },
+                objectFit: "cover",
               }}
-            >
-              Delete
-            </Button>
-          </Stack>
-        </Card>
+              image={product.image}
+              alt={product.title}
+            />
+            <Stack spacing={2} flexGrow={1} justifyContent="center">
+              <CardContent>
+                <Typography variant="h6">{product.title}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {product.description}
+                </Typography>
+                <Typography variant="h6">
+                  Our Price: ₹{product.ourprice}
+                </Typography>
+                <Rating value={product.rating} precision={0.5} readOnly />
+              </CardContent>
+            </Stack>
+            <Stack alignItems="center" justifyContent="center" p={2}>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  handleDelete(product.id);
+                }}
+              >
+                Delete
+              </Button>
+            </Stack>
+          </Card>
+        </Link>
       ))}
     </Stack>
   );
