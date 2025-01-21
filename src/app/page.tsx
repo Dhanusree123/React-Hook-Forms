@@ -1,12 +1,10 @@
-import ProductsPage from "@/Pages/ProductsPage";
 import { Stack } from "@mui/material";
-import { Toaster } from "sonner";
+import HomePage from "@/Pages/HomePage";
 
-export default function Products() {
+export default function Home() {
   return (
     <Stack>
-      <Toaster position="top-right" richColors />
-      <ProductsPage />
+      <HomePage />
     </Stack>
   );
 }
