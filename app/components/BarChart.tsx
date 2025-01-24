@@ -2,7 +2,7 @@
 import { Box } from "@mui/material";
 import { ApexOptions } from "apexcharts";
 import React from "react";
-import ReactApexChart from "react-apexcharts";
+import Chart from "react-apexcharts";
 
 type Attr = {
   series: {
@@ -22,6 +22,9 @@ const BarChart = () => {
     options: {
       chart: {
         type: "bar",
+        toolbar: {
+          show: false,
+        },
         height: 350,
       },
       plotOptions: {
@@ -54,7 +57,7 @@ const BarChart = () => {
   });
   return (
     <Box>
-      <ReactApexChart
+      <Chart
         options={state.options}
         series={state.series}
         type="bar"

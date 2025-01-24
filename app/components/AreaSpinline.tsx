@@ -1,5 +1,4 @@
 "use client";
-import { Box } from "@mui/material";
 import { ApexOptions } from "apexcharts";
 import { useState } from "react";
 import Chart from "react-apexcharts";
@@ -11,62 +10,62 @@ type Attr = {
   }[];
   options: ApexOptions;
 };
-
-const AreaChart = () => {
+const AreaSpinline = () => {
   const [state] = useState<Attr>({
     series: [
       {
-        name: "STOCK MARKET",
-        data: [8165, 8173, 8183, 8245, 8264, 8345],
+        name: "Temperature",
+        data: [31, 40, 28, 51, 22, 39, 40],
+      },
+      {
+        name: "Humidity",
+        data: [11, 32, 25, 32, 34, 12, 31],
       },
     ],
     options: {
       chart: {
+        height: 350,
         type: "area",
         toolbar: {
           show: false,
-        },
-        height: 350,
-        zoom: {
-          enabled: false,
         },
       },
       dataLabels: {
         enabled: false,
       },
       stroke: {
-        curve: "straight",
+        curve: "smooth",
       },
-      title: {
-        text: "Fundamental Analysis of Stock Market",
-        align: "left",
-      },
-      subtitle: {
-        text: "Prices",
-        align: "left",
-      },
-      labels: ["17 Nov", "21 Nov", "25 Nov", "29 Nov", "03 Dec", "07 Dec"],
       xaxis: {
         type: "datetime",
+        categories: [
+          "2018-09-19T00:00:00.000Z",
+          "2018-09-19T01:30:00.000Z",
+          "2018-09-19T02:30:00.000Z",
+          "2018-09-19T03:30:00.000Z",
+          "2018-09-19T04:30:00.000Z",
+          "2018-09-19T05:30:00.000Z",
+          "2018-09-19T06:30:00.000Z",
+        ],
       },
-      yaxis: {
-        opposite: true,
-      },
-      legend: {
-        horizontalAlign: "left",
+      tooltip: {
+        x: {
+          format: "dd/MM/yy HH:mm",
+        },
       },
     },
   });
+
   return (
-    <Box>
+    <>
       <Chart
         options={state.options}
         series={state.series}
         type="area"
         height={350}
       />
-    </Box>
+    </>
   );
 };
 
-export default AreaChart;
+export default AreaSpinline;

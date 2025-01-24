@@ -1,12 +1,13 @@
 "use client";
 import { Box } from "@mui/material";
 import { ApexOptions } from "apexcharts";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 import { useState } from "react";
+import Chart from "react-apexcharts";
 
-const ApexChart = dynamic(() => import("react-apexcharts"), {
-  ssr: false,
-});
+// const ApexChart = dynamic(() => import("react-apexcharts"), {
+//   ssr: false,
+// });
 
 type Attr = {
   series: {
@@ -28,6 +29,9 @@ const LineChartBasic = () => {
       chart: {
         height: 400,
         type: "line",
+        toolbar: {
+          show: false,
+        },
         zoom: {
           enabled: false,
         },
@@ -66,7 +70,7 @@ const LineChartBasic = () => {
   return (
     <Box>
       <Box>
-        <ApexChart
+        <Chart
           options={state.options}
           series={state.series}
           type="line"

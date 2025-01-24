@@ -1,7 +1,7 @@
 "use client";
 import { ApexOptions } from "apexcharts";
 import React from "react";
-import ReactApexChart from "react-apexcharts";
+import Chart from "react-apexcharts";
 
 type Attr = {
   series: number[];
@@ -14,6 +14,9 @@ const PieChart = () => {
       chart: {
         width: 400,
         type: "pie",
+        toolbar: {
+          show: false,
+        },
       },
       labels: ["HTML", "JAVA", "SQL", "CSS", "PYTHON"],
       title: {
@@ -37,7 +40,7 @@ const PieChart = () => {
 
   return (
     <>
-      <ReactApexChart
+      <Chart
         options={state.options}
         series={state.series}
         type="pie"

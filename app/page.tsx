@@ -5,15 +5,17 @@ const Home = () => {
   return (
     <Box sx={{ margin: 20 }}>
       <Typography variant="h3">Welcome to ApexCharts</Typography>
-      <Link href="/linechart/basic">Click for LineChart (Basic)</Link>
+      <Link href="/line-chart/basic">Click for LineChart (Basic)</Link>
       <Divider />
-      <Link href="/linechart/stepline">Click for LineChart (Stepline) </Link>
+      <Link href="/line-chart/step-line">Click for LineChart (Stepline) </Link>
       <Divider />
-      <Link href="/barchart">Click for BarChart </Link>
+      <Link href="/bar-chart">Click for BarChart </Link>
       <Divider />
-      <Link href="/areachart">Click for AreaChart </Link>
+      <Link href="/area-chart">Click for AreaChart </Link>
       <Divider />
-      <Link href="/piechart">Pie Chart</Link>
+      <Link href="/area-chart/spinline">Area Spinline</Link>
+      <Divider />
+      <Link href="/pie-chart">Pie Chart</Link>
     </Box>
   );
 };
