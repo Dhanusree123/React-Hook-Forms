@@ -17,6 +17,7 @@ import { IProduct } from "../Types/Product";
 import CheckboxControl from "../components/CheckboxControl";
 import UseDebounce from "../components/UseDebounce";
 import SortBy from "../components/SortBy";
+import LocalStorage from "../store/LocalStorage";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -33,9 +34,8 @@ const ProductsPage = () => {
   const debouncedSearchQuery = UseDebounce(searchQuery, 500);
 
   const handleDelete = (id: string) => {
-    const updatedProducts = products.filter((product) => product.id !== id);
-    setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
+    LocalStorage.getState().deleteProduct(id);
+    setProducts(LocalStorage.getState().getProducts());
   };
 
   const sortedProducts = [...products].sort((a, b) => {
@@ -44,7 +44,10 @@ const ProductsPage = () => {
     } else if (sortBy === "price-desc") {
       return b.ourprice - a.ourprice;
     } else {
-      return a.title.localeCompare(b.title);
+      return (
+        products.findIndex((p) => p.id === a.id) -
+        products.findIndex((p) => p.id === b.id)
+      );
     }
   });
 
@@ -131,10 +134,7 @@ const ProductsPage = () => {
   }, [location.search, search, categories, sort]);
 
   useEffect(() => {
-    const storedProductData = localStorage.getItem("products");
-    if (storedProductData) {
-      setProducts(JSON.parse(storedProductData));
-    }
+    setProducts(LocalStorage.getState().getProducts());
   }, []);
 
   useEffect(() => {

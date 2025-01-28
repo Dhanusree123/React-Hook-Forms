@@ -19,8 +19,11 @@ import { IProduct, NewProductSchema } from "../Types/Product";
 import ProductTextField from "../components/ProductTextField";
 import SelectControl from "../components/SelectField";
 import { toast } from "sonner";
+import LocalStorage from "../store/LocalStorage";
 
 const AddProductPage = () => {
+  const addProduct = LocalStorage((state) => state.addProduct);
+
   const navigate = useNavigate();
 
   const {
@@ -43,11 +46,7 @@ const AddProductPage = () => {
 
   const onSubmit = (data: IProduct) => {
     const newProduct = { ...data, id: crypto.randomUUID() };
-    const existingProducts = JSON.parse(
-      localStorage.getItem("products") ?? "[]"
-    );
-    existingProducts.push(newProduct);
-    localStorage.setItem("products", JSON.stringify(existingProducts));
+    addProduct(newProduct);
     toast.success("Product added successfully.");
     navigate("/");
   };
