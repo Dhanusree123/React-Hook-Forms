@@ -8,12 +8,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button, FormGroup, IconButton, Input } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { IProduct } from "../Types/product";
 import SearchIcon from "@mui/icons-material/Search";
 import SortIcon from "@mui/icons-material/Sort";
 import InputAdornment from "@mui/material/InputAdornment";
 import UseDebounce from "../components/UseDebounce";
 import CheckBoxController from "../components/CheckBoxController";
+import { useProductStore } from "../Types/productStore";
 
 const CATEGORIES = [
   {
@@ -35,9 +35,12 @@ const ProductsPage = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
-  const [products, setProducts] = useState<IProduct[] | []>(
-    JSON.parse(localStorage.getItem("products") ?? "") ?? []
+  const products = useProductStore((state) => state.products);
+  const setProducts = useProductStore((state) => state.setProducts);
+  const loadProductsFromLocalStorage = useProductStore(
+    (state) => state.loadProductsFromLocalStorage
   );
+
   const [searchQuery, setSearchQuery] = useState<string>(
     params.get("search") || ""
   );
@@ -53,7 +56,6 @@ const ProductsPage = () => {
       (product) => product.productId !== productId
     );
     setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
   const debouncedSearchQuery = UseDebounce(searchQuery, 500);
@@ -120,7 +122,8 @@ const ProductsPage = () => {
 
   useEffect(() => {
     console.log("Clicked", debouncedSearchQuery);
-  }, [debouncedSearchQuery]);
+    loadProductsFromLocalStorage();
+  }, [debouncedSearchQuery, loadProductsFromLocalStorage]);
 
   return (
     <Grid container>

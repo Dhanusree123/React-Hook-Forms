@@ -16,7 +16,8 @@ import { useNavigate } from "react-router-dom";
 import { IProduct, NewProductSchema } from "../Types/product";
 import TextFieldController from "../components/TextFieldController";
 import { toast } from "sonner";
-
+import { useEffect } from "react";
+import { useProductStore } from "../Types/productStore";
 const AddProductForm = () => {
   const navigate = useNavigate();
   const {
@@ -27,19 +28,25 @@ const AddProductForm = () => {
     resolver: zodResolver(NewProductSchema),
   });
 
-  const productData = localStorage.getItem("products");
-  const parsedProducts: IProduct[] = productData
-    ? JSON.parse(productData ?? "")
-    : [];
+  const addProduct = useProductStore((state) => state.addProduct);
+  const saveProductsToLocalStorage = useProductStore(
+    (state) => state.saveProductsToLocalStorage
+  );
+  const loadProductsFromLocalStorage = useProductStore(
+    (state) => state.loadProductsFromLocalStorage
+  );
+
   const onSubmit = (data: IProduct) => {
     const newData = { ...data, productId: crypto.randomUUID() };
-    localStorage.setItem(
-      "products",
-      JSON.stringify([...parsedProducts, newData])
-    );
+    addProduct(newData);
+    saveProductsToLocalStorage();
     toast.success("Form submitted successfully");
     navigate("/products");
   };
+
+  useEffect(() => {
+    loadProductsFromLocalStorage();
+  }, [loadProductsFromLocalStorage]);
 
   return (
     <Box

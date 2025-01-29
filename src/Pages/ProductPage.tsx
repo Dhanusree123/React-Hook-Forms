@@ -8,16 +8,19 @@ import {
   Card,
 } from "@mui/material";
 import { IProduct } from "../Types/product";
+import { useProductStore } from "../Types/productStore";
 
 const ProductPage = () => {
   const navigate = useNavigate();
   const { id: productId } = useParams<{ id: string }>();
 
-  const productData: IProduct[] = JSON.parse(
-    localStorage.getItem("products") ?? "[]"
-  );
+  const products = useProductStore((state) => state.products);
 
-  const product = productData.find(
+  // const productData = useProductStore((state) => state.products);
+
+  // console.log(productData);
+
+  const product = products.find(
     (product: IProduct) => product.productId === productId
   );
 
