@@ -1,5 +1,6 @@
-import {create} from 'zustand'
+import {  create} from 'zustand'
 import { IProduct } from './product';
+import {devtools} from 'zustand/middleware'
 
 export type productStore = {
     products:IProduct[],
@@ -9,7 +10,7 @@ export type productStore = {
     saveProductsToLocalStorage:()=>void
 }
 
-export const useProductStore = create<productStore>((set)=>({
+export const useProductStore = create<productStore>()(devtools((set)=>({
     products:[],
     setProducts:(products)=>set({products}),
     addProduct:(product)=>set((state)=>({products:[...state.products,product]})),
@@ -22,4 +23,5 @@ export const useProductStore = create<productStore>((set)=>({
         const products = useProductStore.getState().products;
         localStorage.setItem('products',JSON.stringify(products));
     },
-}))
+}),{name:'productStore'})
+)
