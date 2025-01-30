@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { IProduct } from "../Types/Product"
+import { devtools } from "zustand/middleware";
 
 type ProductStore = {
     products: IProduct[];
@@ -7,7 +8,7 @@ type ProductStore = {
     getProducts: () => IProduct[];
   deleteProduct: (id: string) => void;
 }
-const LocalStorage = create<ProductStore>()((set) => ({
+const LocalStorage = create<ProductStore>()(devtools((set) => ({
     products: JSON.parse(localStorage.getItem('products') ?? '[]'),
     addProduct: (product: IProduct) => {
         set((state) => {
@@ -26,6 +27,7 @@ const LocalStorage = create<ProductStore>()((set) => ({
           return { products: updatedProducts };
         });
       },
-}))
+}),{name: 'ProductStore'})
+);
 
 export default LocalStorage
