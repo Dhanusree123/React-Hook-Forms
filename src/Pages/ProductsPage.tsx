@@ -3,6 +3,7 @@
 import CheckboxControl from "@/Componenets/CheckboxControl";
 import Sorting from "@/Componenets/Sorting";
 import useDebounce from "@/Componenets/UseDebounce";
+import LocalStorage from "@/store/LocalStorage";
 import { IProduct } from "@/Types/Products";
 import {
   Box,
@@ -35,7 +36,7 @@ const ProductsPage = () => {
   const params = new URLSearchParams(searchParams?.toString());
 
   const [products, setProducts] = useState<IProduct[]>(
-    JSON.parse(localStorage.getItem("products") ?? "")
+    LocalStorage.getState().getProducts() ?? ""
   );
   const [searchQuery, setSearchQuery] = useState<string>(
     params.get("search") || ""
@@ -48,9 +49,8 @@ const ProductsPage = () => {
   const router = useRouter();
 
   const handleDelete = (id: string) => {
-    const updatedProducts = products.filter((product) => product.id !== id);
-    setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
+    LocalStorage.getState().deleteProduct(id);
+    setProducts(LocalStorage.getState().getProducts());
   };
 
   const debouncedSearch = useDebounce(searchQuery, 500);

@@ -13,11 +13,12 @@ import {
 
 import { IProduct } from "@/Types/Products";
 import { useParams, useRouter } from "next/navigation";
+import LocalStorage from "@/store/LocalStorage";
 
 const ProductDetails = () => {
   const params = useParams();
   const id = params?.id;
-  const products = JSON.parse(localStorage.getItem("products") ?? "");
+  const products = LocalStorage.getState().getProducts() ?? "";
   const product = products.find((product: IProduct) => product.id === id);
 
   const router = useRouter();
@@ -70,7 +71,10 @@ const ProductDetails = () => {
             </Typography>
           </CardContent>
           <Stack alignItems="center" p={2}>
-            <Button variant="contained" onClick={router.back}>
+            <Button
+              variant="contained"
+              onClick={() => router.push("/products")}
+            >
               Back
             </Button>
           </Stack>

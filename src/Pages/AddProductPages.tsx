@@ -21,6 +21,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
+import LocalStorage from "@/store/LocalStorage";
 
 type ProductKeys = keyof IProduct;
 const AddProductPage = () => {
@@ -52,6 +53,8 @@ const AddProductPage = () => {
     { value: "electronics", label: "Electronics" },
   ];
 
+  const addProduct = LocalStorage((state) => state.addProduct);
+
   const router = useRouter();
 
   const {
@@ -74,11 +77,7 @@ const AddProductPage = () => {
 
   const onSubmit = (data: IProduct) => {
     const newProduct = { ...data, id: crypto.randomUUID() };
-    const existingProducts = JSON.parse(
-      localStorage.getItem("products") ?? "[]"
-    );
-    existingProducts.push(newProduct);
-    localStorage.setItem("products", JSON.stringify(existingProducts));
+    addProduct(newProduct);
     toast.success("Product added successfully.");
     router.push("/products");
   };
