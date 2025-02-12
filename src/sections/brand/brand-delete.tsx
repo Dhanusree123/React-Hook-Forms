@@ -8,16 +8,16 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
-} from "@mui/material";
+} from '@mui/material';
 type DeleteBrandProps = {
   id: string;
   onDeleteSuccess: () => void;
 };
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useState } from "react";
-import { toast } from "sonner";
-import axios from "axios";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import axios from 'axios';
 export const BrandDelete = ({ id, onDeleteSuccess }: DeleteBrandProps) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -26,9 +26,9 @@ export const BrandDelete = ({ id, onDeleteSuccess }: DeleteBrandProps) => {
   const handleDelete = async () => {
     try {
       const AUTH_TOKEN =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2EwNjc3ODQyNmQ4YTYxZmVhMGU5MzAiLCJlbWFpbCI6ImludGVybnNAbWljcm9mb3guY28iLCJpYXQiOjE3MzkxNjQ3ODMsImV4cCI6MTc0MTc1Njc4M30.w3Noq69dqXl3t2sbAfNDueQFr7IT85lXh0ln4LVM6TY";
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2EwNjc3ODQyNmQ4YTYxZmVhMGU5MzAiLCJlbWFpbCI6ImludGVybnNAbWljcm9mb3guY28iLCJpYXQiOjE3MzkxNjQ3ODMsImV4cCI6MTc0MTc1Njc4M30.w3Noq69dqXl3t2sbAfNDueQFr7IT85lXh0ln4LVM6TY';
       const response = await axios.post(
-        "https://test-api.nine.deals/graphql",
+        'https://test-api.nine.deals/graphql',
         {
           query: `
                 mutation deleteBrand($id:String!){
@@ -41,23 +41,23 @@ export const BrandDelete = ({ id, onDeleteSuccess }: DeleteBrandProps) => {
         },
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${AUTH_TOKEN}`,
           },
         }
       );
-      toast.success("Brand deleted Successfully");
+      toast.success('Brand deleted Successfully');
       handleClose();
       onDeleteSuccess();
     } catch (err: any) {
-      toast.error("Error in deleteing Brand", err);
+      toast.error('Error in deleteing Brand', err);
     }
   };
 
   return (
     <>
-      <IconButton>
-        <DeleteIcon onClick={handleOpen} />
+      <IconButton onClick={handleOpen}>
+        <DeleteIcon />
       </IconButton>
       {
         <Dialog open={open} onClose={handleClose}>
@@ -69,10 +69,10 @@ export const BrandDelete = ({ id, onDeleteSuccess }: DeleteBrandProps) => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button color="error" onClick={handleDelete}>
+            <Button color='error' onClick={handleDelete}>
               Delete
             </Button>
-            <Button color="primary" onClick={handleClose}>
+            <Button color='primary' onClick={handleClose}>
               Cancel
             </Button>
           </DialogActions>
