@@ -56,6 +56,9 @@ const TableContent = ({ search: searchQuery, page, setPage }: Props) => {
   };
 
   const handleTabChange = (_: unknown, newValue: string) => {
+    if (newValue) {
+      params.delete("page");
+    }
     params.set("tab", newValue);
     setTab(newValue);
     setPage(1);
@@ -133,12 +136,16 @@ const TableContent = ({ search: searchQuery, page, setPage }: Props) => {
         </Table>
       </TableContainer>
 
-      <Pagination
-        count={Math.ceil(count / rowsPerPage)}
-        page={page}
-        onChange={handleChangePage}
-        siblingCount={0}
-      />
+      <Box>
+        <Stack justifyContent="center" alignItems="center" marginTop={3}>
+          <Pagination
+            count={Math.ceil(count / rowsPerPage)}
+            page={page}
+            onChange={handleChangePage}
+            siblingCount={0}
+          />
+        </Stack>
+      </Box>
     </Stack>
   );
 };
