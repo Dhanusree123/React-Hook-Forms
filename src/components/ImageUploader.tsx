@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { Plus } from "lucide-react";
 
-type ImageUploadProps = {
+export type ImageUploadProps = {
   onImageSelect: (file: File) => void;
   mode: "light" | "dark";
 };

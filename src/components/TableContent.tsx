@@ -58,8 +58,11 @@ const TableContent = ({ search: searchQuery, page, setPage }: Props) => {
   const handleTabChange = (_: unknown, newValue: string) => {
     if (newValue) {
       params.delete("page");
+      params.set("tab", newValue);
     }
-    params.set("tab", newValue);
+    if (newValue === "all") {
+      params.delete("tab");
+    }
     setTab(newValue);
     setPage(1);
     navigate(`?${params.toString()}`);
@@ -99,9 +102,15 @@ const TableContent = ({ search: searchQuery, page, setPage }: Props) => {
           onChange={handleTabChange}
           sx={{ borderBottom: 1, borderColor: "divider" }}
         >
-          <Tab label="All" value="all" />
-          <Tab label="Active" value="active" />
-          <Tab label="Inactive" value="inactive" />
+          <Tab label={`All${tab === "all" ? `(${count})` : ""}`} value="all" />
+          <Tab
+            label={`Active${tab === "active" ? `(${count})` : ""}`}
+            value="active"
+          />
+          <Tab
+            label={`Inactive${tab === "inactive" ? `(${count})` : ""}`}
+            value="inactive"
+          />
         </Tabs>
       </Box>
 
@@ -112,7 +121,7 @@ const TableContent = ({ search: searchQuery, page, setPage }: Props) => {
               <TableCell>No.</TableCell>
               <TableCell>Title</TableCell>
               <TableCell>Active</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -121,7 +130,7 @@ const TableContent = ({ search: searchQuery, page, setPage }: Props) => {
                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                 <TableCell>{brand.title}</TableCell>
                 <TableCell>{brand.active ? "Active" : "Inactive"}</TableCell>
-                <TableCell align="right">
+                <TableCell>
                   <IconButton
                     onClick={() => navigate(`/brand/${brand.id}/edit`)}
                     size="small"

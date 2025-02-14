@@ -3,23 +3,19 @@ import {
   Breadcrumbs,
   Button,
   Container,
-  IconButton,
   InputAdornment,
   Link,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
-import { Home, Moon, Plus, Search, Sun } from "lucide-react";
+import { Home, Plus, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import TableContent from "../components/TableContent";
-import { BrandsPageProps } from "../type/Schema";
-import useDebounce from "../components/UseDebounce";
-import { logout } from "../graphql/GraphqlLogin";
-import { toast } from "sonner";
+import TableContent from "../../components/TableContent";
+import useDebounce from "../../components/UseDebounce";
 
-const BrandsPage = ({ mode, toggleTheme }: BrandsPageProps) => {
+const BrandsList = () => {
   const location = useLocation();
 
   const params = new URLSearchParams(location.search);
@@ -45,12 +41,6 @@ const BrandsPage = ({ mode, toggleTheme }: BrandsPageProps) => {
     }
     setSearchQuery(value);
     navigate(`?${params.toString()}`);
-  };
-
-  const handleLogout = () => {
-    navigate("/login");
-    logout();
-    toast.success("Logged out successfully!");
   };
 
   useEffect(() => {
@@ -93,9 +83,6 @@ const BrandsPage = ({ mode, toggleTheme }: BrandsPageProps) => {
             <Typography color="text.primary">Brands</Typography>
           </Breadcrumbs>
           <Box sx={{ display: "flex", gap: 2 }}>
-            <IconButton onClick={toggleTheme} color="inherit">
-              {mode === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-            </IconButton>
             <Button
               variant="contained"
               startIcon={<Plus size={16} />}
@@ -108,9 +95,6 @@ const BrandsPage = ({ mode, toggleTheme }: BrandsPageProps) => {
               }}
             >
               New Brand
-            </Button>
-            <Button onClick={handleLogout} variant="contained">
-              Log out
             </Button>
           </Box>
         </Box>
@@ -143,4 +127,4 @@ const BrandsPage = ({ mode, toggleTheme }: BrandsPageProps) => {
   );
 };
 
-export default BrandsPage;
+export default BrandsList;

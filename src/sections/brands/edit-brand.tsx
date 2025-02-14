@@ -4,7 +4,6 @@ import {
   Breadcrumbs,
   Button,
   Container,
-  IconButton,
   Link,
   Paper,
   Switch,
@@ -13,18 +12,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Home, Moon, Sun } from "lucide-react";
-import { BrandsPageProps, Edit, EditSchema } from "../type/Schema";
+import { Home } from "lucide-react";
+import { BrandsPageProps, Edit, EditSchema } from "../../type/Schema";
 import { useCallback, useEffect, useState } from "react";
-import ImageUploader from "../components/ImageUploader";
+import ImageUploader from "../../components/ImageUploader";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
-import { Graphql } from "../graphql/Graphql";
+import { Graphql } from "../../graphql/Graphql";
 
-const EditBrandPage = ({ mode, toggleTheme }: BrandsPageProps) => {
+const EditBrand = ({ mode }: BrandsPageProps) => {
   const [currentTab, setCurrentTab] = useState(0);
 
   const navigate = useNavigate();
@@ -54,13 +53,13 @@ const EditBrandPage = ({ mode, toggleTheme }: BrandsPageProps) => {
         "https://test-api.nine.deals/graphql",
         {
           query: `
-          mutation updateBrand($id:String!,$input:UpdateBrandDto!) {
-            updateBrand(id:$id,input: $input) {
-              title
-              active
+            mutation updateBrand($id:String!,$input:UpdateBrandDto!) {
+              updateBrand(id:$id,input: $input) {
+                title
+                active
+              }
             }
-          }
-        `,
+          `,
           variables: {
             id: data.id,
             input: {
@@ -114,8 +113,6 @@ const EditBrandPage = ({ mode, toggleTheme }: BrandsPageProps) => {
       <Container maxWidth="md">
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
             mb: 3,
           }}
@@ -140,11 +137,7 @@ const EditBrandPage = ({ mode, toggleTheme }: BrandsPageProps) => {
             </Link>
             <Typography color="text.primary">Edit Brand</Typography>
           </Breadcrumbs>
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <IconButton onClick={toggleTheme} color="inherit">
-              {mode === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-            </IconButton>
-          </Box>
+          <Box sx={{ display: "flex", gap: 2 }}></Box>
         </Box>
 
         <Paper sx={{ p: 3 }}>
@@ -241,4 +234,4 @@ const EditBrandPage = ({ mode, toggleTheme }: BrandsPageProps) => {
   );
 };
 
-export default EditBrandPage;
+export default EditBrand;

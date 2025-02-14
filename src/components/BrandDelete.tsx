@@ -70,11 +70,11 @@ export const BrandDelete = ({ id, onDeleteSuccess }: DeleteBrandProps) => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button color="error" onClick={handleDelete}>
-                Delete
-              </Button>
               <Button color="primary" onClick={handleClose}>
                 Cancel
+              </Button>
+              <Button color="error" onClick={handleDelete}>
+                Delete
               </Button>
             </DialogActions>
           </Dialog>
