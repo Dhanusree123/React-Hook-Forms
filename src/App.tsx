@@ -16,6 +16,8 @@ import { Moon, Sun } from "lucide-react";
 import { logout } from "./graphql/GraphqlLogin";
 import AdminPage from "./pages/LoginPage";
 import AddProductPage from "./pages/products/AddProductPage";
+import EditProductPage from "./pages/products/EditProductPage";
+import ProductsPage from "./pages/products/ProductsPage";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("dark");
@@ -64,7 +66,9 @@ function App() {
             path="/brand/:id/edit"
             element={<EditBrandPage mode={mode} />}
           />
+          <Route path="/products" element={<ProductsPage />} />
           <Route path="/product/new" element={<AddProductPage />} />
+          <Route path="/product/:id/edit" element={<EditProductPage />} />
         </Routes>
       </ThemeProvider>
     </>

@@ -1,19 +1,24 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { IProductFormData, productSchema } from "../../../type/Schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Paper, Stack } from "@mui/material";
+import { Box, Button, Paper, Stack, Switch, Typography } from "@mui/material";
 import TextFieldArea from "../../../components/TextFieldArea";
 import { useCallback, useEffect, useMemo } from "react";
+import { generateSlug } from "./Slug";
+import ProductPreview from "./ProductPreview";
 
 type DefaultProp = {
-  productD: IProductFormData | null;
+  productData: IProductFormData | null;
+  isEdit: boolean;
 };
 
-const ProductForm = ({ productD }: DefaultProp) => {
-  const product = productD;
+const ProductForm = ({ productData, isEdit }: DefaultProp) => {
+  const product = productData;
 
   const defaultValues = useMemo(
     () => ({
+      //images: product?.images ?? [],
+      id: product?.id ?? "",
       title: product?.title ?? "",
       description: product?.description ?? "",
       mrp: product?.mrp ?? 0,
@@ -23,6 +28,7 @@ const ProductForm = ({ productD }: DefaultProp) => {
       slug: product?.slug ?? "",
       rating: product?.rating ?? 0,
       reviews: product?.reviews ?? 0,
+      active: true,
     }),
     [product]
   );
@@ -36,25 +42,13 @@ const ProductForm = ({ productD }: DefaultProp) => {
     handleSubmit,
     formState: { errors },
     reset,
+    control,
     setValue,
   } = methods;
-  console.log("ProductForm", product);
+  console.log("ProductData", product);
 
   const onSubmit = (data: IProductFormData) => {
     console.log("Submitted", data);
-  };
-
-  const generateSlug = (value: string) => {
-    if (!value) return "";
-    return value
-      .toLowerCase()
-      .trim()
-      .replace(/&/g, "and")
-      .replace(/-+/g, "-")
-      .replace(/[^\w\s-]/g, " ")
-      .replace(/\s+/g, " ")
-      .replace(/\s+/g, "-")
-      .replace(/^-|-$/g, "");
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,88 +71,121 @@ const ProductForm = ({ productD }: DefaultProp) => {
     });
   }, [defaultValues, reset]);
 
+  console.log(errors);
+
   return (
     <>
-      <Paper sx={{ marginTop: 3, p: 3 }}>
-        <Box sx={{ p: 3 }}>
-          <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Stack spacing={2}>
-                <TextFieldArea
-                  name="title"
-                  label="Title"
-                  placeholder="Title"
-                  helperText={errors.title && errors.title.message}
-                  onChange={handleTitleChange}
-                />
+      <Stack direction="row" spacing={3} marginTop={3}>
+        <Paper sx={{ marginTop: 3, p: 3, width: 450 }}>
+          <Box>
+            <Typography variant="h6">{isEdit ? "Edit" : "Add"}</Typography>
+          </Box>
+          <Box sx={{ p: 3 }}>
+            <FormProvider {...methods}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Stack spacing={2}>
+                  {isEdit && <TextFieldArea name="id" label="ID" disabled />}
+                  <TextFieldArea
+                    name="title"
+                    label="Title"
+                    placeholder="Title"
+                    helperText={errors.title && errors.title.message}
+                    onChange={handleTitleChange}
+                  />
 
-                <TextFieldArea
-                  name="slug"
-                  label="Slug"
-                  placeholder="slug"
-                  helperText={errors.title && errors.title.message}
-                />
+                  <TextFieldArea
+                    name="slug"
+                    label="Slug"
+                    placeholder="slug"
+                    helperText={errors.title && errors.title.message}
+                  />
 
-                <TextFieldArea
-                  name="description"
-                  label="Description"
-                  placeholder="Description"
-                  multiline
-                  rows={4}
-                  helperText={errors.description && errors.description.message}
-                />
+                  <TextFieldArea
+                    name="description"
+                    label="Description"
+                    placeholder="Description"
+                    multiline
+                    rows={4}
+                    helperText={
+                      errors.description && errors.description.message
+                    }
+                  />
 
-                <TextFieldArea
-                  name="mrp"
-                  label="MRP"
-                  placeholder="MRP"
-                  helperText={errors.mrp && errors.mrp.message}
-                />
+                  <TextFieldArea
+                    name="mrp"
+                    label="MRP"
+                    placeholder="MRP"
+                    helperText={errors.mrp && errors.mrp.message}
+                  />
 
-                <TextFieldArea
-                  name="listPrice"
-                  label="List Price"
-                  placeholder="List Price"
-                  helperText={errors.listPrice && errors.listPrice.message}
-                />
+                  <TextFieldArea
+                    name="listPrice"
+                    label="List Price"
+                    placeholder="List Price"
+                    helperText={errors.listPrice && errors.listPrice.message}
+                  />
 
-                <TextFieldArea
-                  name="dealPrice"
-                  placeholder="Deal Price"
-                  label="Deal Price"
-                />
+                  <TextFieldArea
+                    name="dealPrice"
+                    placeholder="Deal Price"
+                    label="Deal Price"
+                  />
 
-                <TextFieldArea
-                  name="code"
-                  label="Code"
-                  placeholder="Code"
-                  helperText={errors.code && errors.code.message}
-                />
+                  <TextFieldArea
+                    name="code"
+                    label="Code"
+                    placeholder="Code"
+                    helperText={errors.code && errors.code.message}
+                  />
 
-                <TextFieldArea
-                  name="rating"
-                  label="Rating"
-                  placeholder="Rating"
-                  helperText={errors.rating && errors.rating.message}
-                />
+                  <TextFieldArea
+                    name="rating"
+                    label="Rating"
+                    placeholder="Rating"
+                    helperText={errors.rating && errors.rating.message}
+                  />
 
-                <TextFieldArea
-                  name="reviews"
-                  label="Reviews"
-                  placeholder="Reviews"
-                  helperText={errors.reviews && errors.reviews.message}
-                />
+                  <TextFieldArea
+                    name="reviews"
+                    label="Reviews"
+                    placeholder="Reviews"
+                    helperText={errors.reviews && errors.reviews.message}
+                  />
 
-                <Box>
-                  <Button type="submit" variant="contained">
-                    Submit
-                  </Button>
-                </Box>
-              </Stack>
-            </form>
-          </FormProvider>
-        </Box>
-      </Paper>
+                  {isEdit ?? (
+                    <Box>
+                      <Typography>Active</Typography>
+                      <Controller
+                        name="active"
+                        control={control}
+                        render={({ field }) => (
+                          <Switch
+                            {...field}
+                            checked={field.value}
+                            onChange={(e) => field.onChange(e.target.checked)}
+                          />
+                        )}
+                      />
+                    </Box>
+                  )}
+
+                  <Box>
+                    <Button type="submit" variant="contained">
+                      Submit
+                    </Button>
+                  </Box>
+                </Stack>
+              </form>
+            </FormProvider>
+          </Box>
+        </Paper>
+
+        <Paper sx={{ marginTop: 3, p: 3, width: 450 }}>
+          <Box sx={{ p: 3 }}>
+            <ProductPreview productData={product} />
+          </Box>
+        </Paper>
+      </Stack>
     </>
   );
 };

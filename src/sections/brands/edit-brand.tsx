@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
-import { Graphql } from "../../graphql/Graphql";
+import { Graphql } from "../../graphql/Find/Graphql";
 
 const EditBrand = ({ mode }: BrandsPageProps) => {
   const [currentTab, setCurrentTab] = useState(0);

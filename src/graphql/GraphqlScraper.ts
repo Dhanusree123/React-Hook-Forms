@@ -3,7 +3,6 @@ import axios from "axios";
 const urlQuery = `
 query scraper($url: String!) {
     scraper(url: $url) {
-        images
         title
         description
         mrp
@@ -11,6 +10,7 @@ query scraper($url: String!) {
         dealPrice
         rating
         reviews
+        code
     }
 }
 `;
@@ -25,7 +25,7 @@ export const GraphqlScraper = async (url: string) => {
                 url: "https://test-api.nine.deals/graphql",
                 method: "post",
                 headers: { 
-                    "Content-Type": "application/json",
+                    //"Content-Type": "application/json",
                     Authorization: `Bearer ${AUTH_TOKEN}`,
                 },
                 data: {
@@ -35,6 +35,7 @@ export const GraphqlScraper = async (url: string) => {
                     }
                 },
             });
+            console.log("scraper",response.data);
             return response.data.data?.scraper;
     }catch (err) {
         console.log(err);

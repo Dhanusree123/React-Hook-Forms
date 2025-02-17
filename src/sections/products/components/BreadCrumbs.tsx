@@ -1,7 +1,11 @@
 import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import { Home } from "lucide-react";
 
-const BreadCrumbs = () => {
+type Props = {
+  breadcrumbName: string;
+};
+
+const BreadCrumbs = ({ breadcrumbName }: Props) => {
   return (
     <Box
       sx={{
@@ -27,7 +31,7 @@ const BreadCrumbs = () => {
         >
           Products
         </Link>
-        <Typography color="text.primary">Add Product</Typography>
+        <Typography color="text.primary">{breadcrumbName}</Typography>
       </Breadcrumbs>
     </Box>
   );

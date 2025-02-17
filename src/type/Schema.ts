@@ -39,6 +39,8 @@ export const loginSchema = z.object({
 export type LoginFormSchema = z.infer<typeof loginSchema>;
 
 export const productSchema = z.object({
+  id: z.string().min(1).optional(),
+  //images: z.array(z.string().url()).min(1),
   title: z.string().min(3, 'Title must be at least 3 characters long.'),
   slug: z.string().min(16, 'URL Slug must be longer than 16 characters.').optional(),
   description: z.string().min(32, 'Description is required'),
@@ -51,6 +53,16 @@ export const productSchema = z.object({
   //store: z.string().min(1, 'Store is required').optional(),
   rating: z.coerce.number().optional(),
   reviews: z.coerce.number().optional(),
+  active: z.boolean().optional(),
 });
 
 export type IProductFormData = z.infer<typeof productSchema>;
+
+export type Product = {
+  id: string;
+  title: string;
+  brand: string;
+  dealPrice: number;
+  listPrice: number;
+  mrp: number;
+}

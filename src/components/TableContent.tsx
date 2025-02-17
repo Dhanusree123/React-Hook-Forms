@@ -15,7 +15,7 @@ import {
 import { Pencil } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Brand } from "../type/Schema";
-import { Graphql } from "../graphql/Graphql";
+import { Graphql } from "../graphql/Find/Graphql";
 import { useLocation, useNavigate } from "react-router-dom";
 import BrandDelete from "./BrandDelete";
 

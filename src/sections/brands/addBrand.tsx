@@ -18,7 +18,7 @@ import { BrandFormData, BrandsPageProps, Schema } from "../../type/Schema";
 import ImageUploader from "../../components/ImageUploader";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import GraphqlMutation from "../../graphql/GraphqlMutation";
+import GraphqlMutation from "../../graphql/Mutation/GraphqlMutation";
 
 const AddBrand = ({ mode }: BrandsPageProps) => {
   const [currentTab, setCurrentTab] = useState(0);
