@@ -42,15 +42,15 @@ export const productSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters long.'),
   slug: z.string().min(16, 'URL Slug must be longer than 16 characters.').optional(),
   description: z.string().min(32, 'Description is required'),
-  mrp: z.number().gt(0, 'MRP must be greater than 0.'),
-  listPrice: z.number().gt(0, 'List price must be greater than 0.'),
-  dealPrice: z.number().gt(0, 'Deal price must be greater than 0.'),
+  mrp: z.coerce.number().gt(0, 'MRP must be greater than 0.'),
+  listPrice: z.coerce.number().gt(0, 'List price must be greater than 0.'),
+  dealPrice: z.coerce.number().gt(0, 'Deal price must be greater than 0.'),
   code: z.string().min(1, 'CODE is required.'),
   //brand: z.string().min(1, 'Brand is required').optional(),
   //category: z.string().min(1, 'Category is required').optional(),
   //store: z.string().min(1, 'Store is required').optional(),
-  rating: z.number().optional(),
-  reviews: z.number().optional(),
+  rating: z.coerce.number().optional(),
+  reviews: z.coerce.number().optional(),
 });
 
 export type IProductFormData = z.infer<typeof productSchema>;

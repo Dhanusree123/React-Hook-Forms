@@ -1,124 +1,41 @@
 import {
   Box,
-  Breadcrumbs,
   Button,
   Container,
-  Link,
   Paper,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { Home } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { GraphqlScraper } from "../../graphql/GraphqlScraper";
-import { Controller, FormProvider, useForm } from "react-hook-form";
-import { IProductFormData, productSchema } from "../../type/Schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { IProductFormData } from "../../type/Schema";
+import ProductForm from "./components/product-form";
+import BreadCrumbs from "./components/BreadCrumbs";
 
 const AddProduct = () => {
   const [productUrl, setProductUrl] = useState("");
-  const [asin, setAsin] = useState("");
-  const [productData, setProductData] = useState<IProductFormData>();
+  const [productData, setProductData] = useState<IProductFormData | null>(null);
 
-  const onSubmit = (data: IProductFormData) => {
-    console.log(data);
-  };
-
-  const defaultValues = useMemo(
-    () => ({
-      title: productData?.title ?? "",
-      description: productData?.description ?? "",
-      mrp: productData?.mrp ?? 0,
-      listPrice: productData?.listPrice ?? 0,
-      dealPrice: productData?.dealPrice ?? 0,
-      code: productData?.code ?? "",
-      slug: productData?.title ?? "",
-      rating: productData?.rating ?? 0,
-      reviews: productData?.reviews ?? 0,
-    }),
-    [productData]
-  );
-
-  console.log(defaultValues);
-
-  const fetchProducts = useCallback(async () => {
-    if (!asin) return;
-    const products = await GraphqlScraper(asin);
-    if (products) {
-      setProductData(products);
-      setProductUrl(asin);
-      console.log("products: ", products);
-    }
-    /*const url = asin;
-    const products = await GraphqlScraper(url);
-    setProductData(products);
-    setProductUrl(asin);
-    console.log("products: ", products);*/
-  }, [asin]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
-  const handleFetch = () => {
+  const handleFetch = async () => {
     const asinMatch = productUrl.match(/\/dp\/([A-Za-z0-9]+)/);
     const asin = asinMatch ? asinMatch[1] : "";
-    setAsin(`https://amazon.in/dp/${asin}`);
+    const formattedUrl = `https://amazon.in/dp/${asin}`;
+    if (!formattedUrl) return;
+    const products = await GraphqlScraper(formattedUrl);
+    if (products) {
+      setProductData(products);
+      setProductUrl(formattedUrl);
+      console.log("products: ", products);
+    }
   };
 
-  //const {title, description, mrp, listPrice, dealPrice, code} = productData;
-
-  const methods = useForm<IProductFormData>({
-    resolver: zodResolver(productSchema),
-    defaultValues,
-  });
-
-  const {
-    handleSubmit,
-    control,
-    register,
-    formState: { errors },
-  } = methods;
-
-  /*const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .trim()
-      .replace(/[\s-]+/g, "-")
-      .replace(/(^-+|-+$)/g, "");
-  };*/
+  console.log("product1:", productData);
 
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "background.default", py: 4 }}>
       <Container maxWidth="md">
-        <Box
-          sx={{
-            alignItems: "center",
-            mb: 3,
-          }}
-        >
-          <Breadcrumbs separator="›">
-            <Link
-              href="#"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                color: "text.secondary",
-                textDecoration: "none",
-              }}
-            >
-              <Home size={16} style={{ marginRight: 4 }} />
-            </Link>
-            <Link
-              href="/products"
-              sx={{ color: "text.secondary", textDecoration: "none" }}
-            >
-              Products
-            </Link>
-            <Typography color="text.primary">Add Product</Typography>
-          </Breadcrumbs>
-        </Box>
+        <BreadCrumbs />
 
         <Paper sx={{ p: 1 }}>
           <Box sx={{ p: 1 }}>
@@ -144,96 +61,7 @@ const AddProduct = () => {
           </Box>
         </Paper>
 
-        <Paper sx={{ marginTop: 3, p: 3 }}>
-          <Box sx={{ p: 3 }}>
-            <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Stack spacing={2}>
-                  <Controller
-                    name="title"
-                    control={control}
-                    defaultValue={productData?.title}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        {...register("title")}
-                        value={field.value}
-                        label="Title"
-                        error={Boolean(errors.title)}
-                        helperText={errors.title && errors.title?.message}
-                        sx={{ width: { xs: 300, sm: 400 } }}
-                      />
-                    )}
-                  />
-                  <TextField
-                    {...register("slug")}
-                    label="Slug"
-                    type="text"
-                    fullWidth
-                    error={!!errors.title}
-                    helperText={errors.title?.message}
-                  />
-                  <TextField
-                    {...register("description")}
-                    label="Description"
-                    type="text"
-                    fullWidth
-                    error={!!errors.description}
-                    helperText={errors.description?.message}
-                  />
-                  <TextField
-                    {...register("mrp")}
-                    label="MRP"
-                    type="number"
-                    fullWidth
-                    error={!!errors.mrp}
-                    helperText={errors.mrp?.message}
-                  />
-                  <TextField
-                    {...register("listPrice")}
-                    label="List Price"
-                    type="number"
-                    fullWidth
-                    error={!!errors.listPrice}
-                    helperText={errors.listPrice?.message}
-                  />
-                  <TextField
-                    {...register("dealPrice")}
-                    label="Deal Price"
-                    type="number"
-                    fullWidth
-                    error={!!errors.dealPrice}
-                    helperText={errors.dealPrice?.message}
-                  />
-                  <TextField
-                    {...register("code")}
-                    label="Code"
-                    type="text"
-                    fullWidth
-                    error={!!errors.code}
-                    helperText={errors.code?.message}
-                  />
-                  <TextField
-                    {...register("rating")}
-                    label="Rating"
-                    type="number"
-                    fullWidth
-                    error={!!errors.rating}
-                    helperText={errors.rating?.message}
-                  />
-                  <TextField
-                    {...register("reviews")}
-                    label="Reviews"
-                    type="number"
-                    fullWidth
-                    error={!!errors.reviews}
-                    helperText={errors.reviews?.message}
-                  />
-                </Stack>
-              </form>
-            </FormProvider>
-          </Box>
-        </Paper>
+        <ProductForm productD={productData} />
       </Container>
     </Box>
   );

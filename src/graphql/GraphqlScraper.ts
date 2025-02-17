@@ -3,6 +3,7 @@ import axios from "axios";
 const urlQuery = `
 query scraper($url: String!) {
     scraper(url: $url) {
+        images
         title
         description
         mrp

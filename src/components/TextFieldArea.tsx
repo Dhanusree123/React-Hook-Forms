@@ -1,31 +1,36 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { IProductFormData, productSchema } from "../type/Schema";
+import { Controller, useFormContext } from "react-hook-form";
 import { TextField } from "@mui/material";
+import type { TextFieldProps } from "@mui/material";
 
-export type ProductProps = {
-  name: keyof IProductFormData;
-  label: string;
-  type: "text" | "number";
-  productData?: IProductFormData[];
+export type ProductProps = TextFieldProps & {
+  name: string;
 };
 
-const TextFieldArea = ({ name, label, type }: ProductProps) => {
-  const {
-    register,
-    formState: { errors },
-  } = useForm<IProductFormData>({
-    resolver: zodResolver(productSchema),
-  });
+const TextFieldArea = ({
+  name,
+  helperText,
+  type = "text",
+  ...other
+}: ProductProps) => {
+  const { control, register } = useFormContext();
+
   return (
     <>
-      <TextField
-        {...register(name)}
-        label={label}
-        type={type}
-        fullWidth
-        error={!!errors[name]}
-        helperText={errors[name]?.message}
+      <Controller
+        name={name}
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            {...field}
+            {...register(name)}
+            fullWidth
+            value={field.value}
+            type={type}
+            error={!!error}
+            helperText={error ? error?.message : helperText}
+            {...other}
+          />
+        )}
       />
     </>
   );
