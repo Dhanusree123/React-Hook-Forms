@@ -3,16 +3,17 @@ import { IProductFormData, productSchema } from "../../../type/Schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Paper, Stack, Switch, Typography } from "@mui/material";
 import TextFieldArea from "../../../components/TextFieldArea";
-import { useCallback, useEffect, useMemo } from "react";
-import { generateSlug } from "./Slug";
+import { useEffect, useMemo } from "react";
+import { generateSlug } from "./common";
 import ProductPreview from "./ProductPreview";
 
 type DefaultProp = {
   productData: IProductFormData | null;
   isEdit: boolean;
+  loading?: boolean;
 };
 
-const ProductForm = ({ productData, isEdit }: DefaultProp) => {
+const ProductForm = ({ productData, isEdit, loading }: DefaultProp) => {
   const product = productData;
 
   const defaultValues = useMemo(
@@ -44,6 +45,7 @@ const ProductForm = ({ productData, isEdit }: DefaultProp) => {
     reset,
     control,
     setValue,
+    watch,
   } = methods;
   console.log("ProductData", product);
 
@@ -54,16 +56,18 @@ const ProductForm = ({ productData, isEdit }: DefaultProp) => {
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     console.log("value:", value);
-    setFormValue("title", value);
-    setFormValue("slug", generateSlug(value));
+    setValue("title", value);
+    setValue("slug", generateSlug(value));
   };
 
-  const setFormValue = useCallback(
-    (field: keyof IProductFormData, value: string) => {
-      setValue(field, value, { shouldValidate: true });
-    },
-    [setValue]
-  );
+  const title = watch("title");
+  const mrp = watch("mrp");
+  const dealPrice = watch("dealPrice");
+  const listPrice = watch("listPrice");
+
+  useEffect(() => {
+    setValue("slug", generateSlug(title));
+  }, [title, setValue]);
 
   useEffect(() => {
     reset({
@@ -76,115 +80,122 @@ const ProductForm = ({ productData, isEdit }: DefaultProp) => {
   return (
     <>
       <Stack direction="row" spacing={3} marginTop={3}>
-        <Paper sx={{ marginTop: 3, p: 3, width: 450 }}>
+        <Paper sx={{ marginTop: 3, p: 3, width: 1 / 2 }}>
           <Box>
-            <Typography variant="h6">{isEdit ? "Edit" : "Add"}</Typography>
-          </Box>
-          <Box sx={{ p: 3 }}>
-            <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Stack spacing={2}>
-                  {isEdit && <TextFieldArea name="id" label="ID" disabled />}
-                  <TextFieldArea
-                    name="title"
-                    label="Title"
-                    placeholder="Title"
-                    helperText={errors.title && errors.title.message}
-                    onChange={handleTitleChange}
-                  />
+            <Box>
+              <Typography variant="h6">{isEdit ? "Edit" : "Add"}</Typography>
+            </Box>
+            <Box sx={{ p: 3 }}>
+              <FormProvider {...methods}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Stack spacing={2}>
+                    {isEdit && <TextFieldArea name="id" label="ID" disabled />}
+                    <TextFieldArea
+                      name="title"
+                      label="Title"
+                      placeholder="Title"
+                      helperText={errors.title && errors.title.message}
+                      onChange={handleTitleChange}
+                    />
 
-                  <TextFieldArea
-                    name="slug"
-                    label="Slug"
-                    placeholder="slug"
-                    helperText={errors.title && errors.title.message}
-                  />
+                    <TextFieldArea
+                      name="slug"
+                      label="Slug"
+                      placeholder="slug"
+                      helperText={errors.title && errors.title.message}
+                      disabled
+                    />
 
-                  <TextFieldArea
-                    name="description"
-                    label="Description"
-                    placeholder="Description"
-                    multiline
-                    rows={4}
-                    helperText={
-                      errors.description && errors.description.message
-                    }
-                  />
+                    <TextFieldArea
+                      name="description"
+                      label="Description"
+                      placeholder="Description"
+                      multiline
+                      rows={4}
+                      helperText={
+                        errors.description && errors.description.message
+                      }
+                    />
 
-                  <TextFieldArea
-                    name="mrp"
-                    label="MRP"
-                    placeholder="MRP"
-                    helperText={errors.mrp && errors.mrp.message}
-                  />
+                    <TextFieldArea
+                      name="mrp"
+                      label="MRP"
+                      placeholder="MRP"
+                      helperText={errors.mrp && errors.mrp.message}
+                    />
 
-                  <TextFieldArea
-                    name="listPrice"
-                    label="List Price"
-                    placeholder="List Price"
-                    helperText={errors.listPrice && errors.listPrice.message}
-                  />
+                    <TextFieldArea
+                      name="listPrice"
+                      label="List Price"
+                      placeholder="List Price"
+                      helperText={errors.listPrice && errors.listPrice.message}
+                    />
 
-                  <TextFieldArea
-                    name="dealPrice"
-                    placeholder="Deal Price"
-                    label="Deal Price"
-                  />
+                    <TextFieldArea
+                      name="dealPrice"
+                      placeholder="Deal Price"
+                      label="Deal Price"
+                    />
 
-                  <TextFieldArea
-                    name="code"
-                    label="Code"
-                    placeholder="Code"
-                    helperText={errors.code && errors.code.message}
-                  />
+                    <TextFieldArea
+                      name="code"
+                      label="Code"
+                      placeholder="Code"
+                      helperText={errors.code && errors.code.message}
+                    />
 
-                  <TextFieldArea
-                    name="rating"
-                    label="Rating"
-                    placeholder="Rating"
-                    helperText={errors.rating && errors.rating.message}
-                  />
+                    <TextFieldArea
+                      name="rating"
+                      label="Rating"
+                      placeholder="Rating"
+                      helperText={errors.rating && errors.rating.message}
+                    />
 
-                  <TextFieldArea
-                    name="reviews"
-                    label="Reviews"
-                    placeholder="Reviews"
-                    helperText={errors.reviews && errors.reviews.message}
-                  />
+                    <TextFieldArea
+                      name="reviews"
+                      label="Reviews"
+                      placeholder="Reviews"
+                      helperText={errors.reviews && errors.reviews.message}
+                    />
 
-                  {isEdit ?? (
+                    {isEdit ?? (
+                      <Box>
+                        <Typography>Active</Typography>
+                        <Controller
+                          name="active"
+                          control={control}
+                          render={({ field }) => (
+                            <Switch
+                              {...field}
+                              checked={field.value}
+                              onChange={(e) => field.onChange(e.target.checked)}
+                            />
+                          )}
+                        />
+                      </Box>
+                    )}
+
                     <Box>
-                      <Typography>Active</Typography>
-                      <Controller
-                        name="active"
-                        control={control}
-                        render={({ field }) => (
-                          <Switch
-                            {...field}
-                            checked={field.value}
-                            onChange={(e) => field.onChange(e.target.checked)}
-                          />
-                        )}
-                      />
+                      <Button type="submit" variant="contained">
+                        Submit
+                      </Button>
                     </Box>
-                  )}
-
-                  <Box>
-                    <Button type="submit" variant="contained">
-                      Submit
-                    </Button>
-                  </Box>
-                </Stack>
-              </form>
-            </FormProvider>
+                  </Stack>
+                </form>
+              </FormProvider>
+            </Box>
           </Box>
         </Paper>
 
-        <Paper sx={{ marginTop: 3, p: 3, width: 450 }}>
-          <Box sx={{ p: 3 }}>
-            <ProductPreview productData={product} />
-          </Box>
-        </Paper>
+        <Box sx={{ width: 1 / 2 }}>
+          <ProductPreview
+            title={title}
+            dealPrice={dealPrice}
+            mrp={mrp}
+            listPrice={listPrice}
+            loading={loading}
+          />
+        </Box>
       </Stack>
     </>
   );

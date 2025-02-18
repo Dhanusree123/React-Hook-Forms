@@ -14,8 +14,8 @@ const AddProduct = () => {
   };
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "background.default", py: 4 }}>
-      <Container maxWidth="md">
+    <Box sx={{ bgcolor: "background.default", py: 4 }}>
+      <Container maxWidth="lg">
         <BreadCrumbs breadcrumbName="Add Product" />
         <ScraperForm ProductData={handleScraper} />
         <ProductForm productData={product} isEdit={false} />

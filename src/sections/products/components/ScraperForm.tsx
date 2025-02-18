@@ -22,6 +22,7 @@ const ScraperForm = ({ code, ProductData }: Props) => {
     const asinMatch = productUrl.match(/\/dp\/([A-Za-z0-9]+)/);
     const asin = asinMatch ? asinMatch[1] : "";
     const formattedUrl = `https://amazon.in/dp/${asin}`;
+    console.log("asinMatch", asinMatch);
     const products = await GraphqlScraper(formattedUrl);
     ProductData(products);
     setProductUrl(formattedUrl);

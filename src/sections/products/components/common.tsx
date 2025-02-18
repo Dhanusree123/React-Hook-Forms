@@ -10,3 +10,10 @@ export const generateSlug = (input: string): string => {
     .replace(/\s+/g, "-")
     .replace(/^-|-$/g, "");
 };
+
+export const currencyFormatter = new Intl.NumberFormat("en-IN", {
+  style: "currency",
+  currency: "INR",
+  maximumFractionDigits: 0,
+  minimumFractionDigits: 0,
+});
