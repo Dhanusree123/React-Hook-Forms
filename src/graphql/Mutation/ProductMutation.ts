@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { UpdateProductSchema } from "../../type/Schema";
+import { UpdateProductSchema } from "../../types/Schema";
 
 const Mutation = `
     mutation updateProduct($id: string, $input: UpdateProductDto){

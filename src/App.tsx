@@ -18,6 +18,7 @@ import AdminPage from "./pages/LoginPage";
 import AddProductPage from "./pages/products/AddProductPage";
 import EditProductPage from "./pages/products/EditProductPage";
 import ProductsPage from "./pages/products/ProductsPage";
+import Items from "./sections/products/components/dnd-kit/Items";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("dark");
@@ -69,6 +70,7 @@ function App() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/product/new" element={<AddProductPage />} />
           <Route path="/product/:id/edit" element={<EditProductPage />} />
+          <Route path="/items" element={<Items />} />
         </Routes>
       </ThemeProvider>
     </>

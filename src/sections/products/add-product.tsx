@@ -3,7 +3,7 @@ import ProductForm from "./components/product-form";
 import BreadCrumbs from "./components/BreadCrumbs";
 import ScraperForm from "./components/ScraperForm";
 import { useState } from "react";
-import { IProductFormData } from "../../type/Schema";
+import { IProductFormData } from "../../types/Product";
 
 const AddProduct = () => {
   const [product, setProduct] = useState<IProductFormData | null>(null);

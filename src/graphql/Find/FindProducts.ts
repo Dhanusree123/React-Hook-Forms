@@ -21,6 +21,14 @@ query findProducts($skip:Int!, $limit: Int, $search: BaseSearch, $sort: ProductS
   }
 }`;
 
+const findProductById = `
+  query findProductById($id:String!){
+    findProductById(id: $id){
+      ...ProductFragment
+    }
+  }
+`
+
 export const FindProducts = async (skip: number, limit?: number, search?: {title: string}, 
     sort?: {createdAt: "asc" | "desc", dealPrice: "asc" | "desc"}, 
     filter?: {active?: boolean;
@@ -50,3 +58,25 @@ export const FindProducts = async (skip: number, limit?: number, search?: {title
     console.error(err);
   }
 };
+
+export const FindProductById = async (id: string) => {
+  try {
+    const response = await axios({
+      url: "https://test-api.nine.deals/graphql",
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      data: {
+        query: findProductById,
+        variables: {
+          id
+        }
+      },
+    });
+    console.log("response",response);
+    const data = await response.data;
+    console.log("find product by id response data",response.data);
+    return data.data.findProducts;
+  } catch (err) {
+    console.error(err);
+  }
+} 

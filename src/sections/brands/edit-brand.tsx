@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Home } from "lucide-react";
-import { BrandsPageProps, Edit, EditSchema } from "../../type/Schema";
+import { BrandsPageProps, Edit, EditSchema } from "../../types/Schema";
 import { useCallback, useEffect, useState } from "react";
 import ImageUploader from "../../components/ImageUploader";
 import { Controller, useForm } from "react-hook-form";

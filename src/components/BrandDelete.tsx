@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import axios from "axios";
-import { DeleteBrandProps } from "../type/Schema";
+import { DeleteBrandProps } from "../types/Schema";
 import { Icon } from "@iconify/react";
 
 export const BrandDelete = ({ id, onDeleteSuccess }: DeleteBrandProps) => {

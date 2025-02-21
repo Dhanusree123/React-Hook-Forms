@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IProductFormData } from "../../../type/Schema";
+import { IProductFormData } from "../../../types/Schema";
 import { GraphqlScraper } from "../../../graphql/GraphqlScraper";
 import {
   Box,

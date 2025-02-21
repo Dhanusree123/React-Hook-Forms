@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Brand } from "../../type/Schema";
+import { Brand } from "../../types/Schema";
 import { useState } from "react";
 
 const GraphqlMutation = () => {

@@ -14,7 +14,7 @@ import { HomeIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BrandFormData, BrandsPageProps, Schema } from "../../type/Schema";
+import { BrandFormData, BrandsPageProps, Schema } from "../../types/Schema";
 import ImageUploader from "../../components/ImageUploader";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";

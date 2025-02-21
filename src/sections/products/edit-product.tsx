@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { FindProducts } from "../../graphql/Find/FindProducts";
 import ProductForm from "./components/product-form";
-import { IProductFormData } from "../../type/Schema";
+import { IProductFormData } from "../../types/Product";
 
 const EditPage = () => {
   const { id } = useParams<{ id: string }>();

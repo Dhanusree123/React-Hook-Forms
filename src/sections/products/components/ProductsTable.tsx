@@ -17,7 +17,7 @@ import { Pencil } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FindProducts } from "../../../graphql/Find/FindProducts";
-import { Product } from "../../../type/Schema";
+import { Product } from "../../../types/Product";
 
 type Props = {
   search: string;
