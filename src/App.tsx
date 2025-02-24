@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import UsersPage from "./pages/UsersPage";
 import UserEditPage from "./pages/users/UserEditPage";
 import Header from "./components/Header";
 import { useState } from "react";
@@ -7,8 +6,9 @@ import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import getTheme from "./theme/useTheme";
 import { Toaster } from "sonner";
-import ProfilePage from "./pages/ProfilePage";
-import ProjectHomePage from "./pages/ProjectHomePage";
+import ProjectHomePage from "./pages/home/ProjectHomePage";
+import UsersPage from "./pages/users/UsersPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 const App = () => {
   const [mode, setMode] = useState<"light" | "dark">("dark");
