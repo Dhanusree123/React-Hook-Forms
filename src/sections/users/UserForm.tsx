@@ -57,7 +57,7 @@ const UserForm = (props: Props) => {
     });
   }, [defaultValues, reset]);
 
-  console.log(errors);
+  // console.log(errors);
   return (
     <Box
       sx={{

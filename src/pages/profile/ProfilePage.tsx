@@ -1,39 +1,32 @@
-import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
-import { toast } from "sonner";
-import { Box } from "@mui/material";
-import { IUser } from "../../types/user";
+// import axios from "axios";
+// import { useEffect } from "react";
+import { Box, Card, TextField } from "@mui/material";
 import CustomBreadCrumbs from "../../components/CustomBreadCrumbs";
-import UserForm from "../../sections/users/UserForm";
 
 const ProfilePage = () => {
-  const [user, setUser] = useState<IUser | null>(null);
+  const email = localStorage.getItem("email");
+  const password = localStorage.getItem("password");
 
-  const handleUserById = useCallback(async () => {
-    try {
-      const user = await axios.get(`https://reqres.in/api/users/5`, {
-        headers: {
-          Accept: "application/json",
-        },
-      });
-      setUser(user.data.data);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-
-  const handleSubmit = () => {
-    toast.success("Profile updated Successfully");
-  };
-  useEffect(() => {
-    handleUserById();
-  }, [handleUserById]);
-
-  console.log(user);
   return (
     <Box sx={{ ml: 9, mr: 9 }}>
       <CustomBreadCrumbs pathName="User Profile" />
-      <UserForm onSubmit={handleSubmit} user={user} />
+      <Card sx={{ p: 3, mt: 7 }}>
+        <TextField
+          value={email}
+          disabled
+          fullWidth
+          label="Email"
+          margin="normal"
+        />
+        <TextField
+          type="password"
+          value={password}
+          disabled
+          fullWidth
+          label="Password"
+          margin="normal"
+        />
+      </Card>
     </Box>
   );
 };

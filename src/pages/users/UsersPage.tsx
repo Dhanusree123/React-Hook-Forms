@@ -55,6 +55,13 @@ const UsersPage = () => {
     }
   }, [page, rowsPerPage]);
 
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  });
   useEffect(() => {
     handleUsers();
   }, [handleUsers]);

@@ -25,8 +25,6 @@ const UserEditPage = () => {
     }
   }, [id]);
 
-  console.log(id);
-  console.log(user);
   const handleSubmit = async () => {
     try {
       const userById = await axios.patch(`https://reqres.in/api/users/${id}`, {
@@ -34,8 +32,7 @@ const UserEditPage = () => {
           Accept: "application/json",
         },
       });
-      console.log(userById.data.updatedAt);
-      toast.success(userById.data.updatedAt);
+      toast.success(`Updated At ${userById.data.updatedAt}`);
       navigate("/users");
     } catch (err) {
       console.log(err);

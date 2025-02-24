@@ -10,36 +10,34 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
 import { Auth, Schema } from "../../types/auth";
+import { useState } from "react";
 
 export const AuthView = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Auth>({
     resolver: zodResolver(Schema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
   });
 
-  const onSubmit = async (data: Auth) => {
+  const onSubmit = async () => {
     try {
-      const response = await axios.post("https://reqres.in/api/login", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+      const response = await axios({
+        url: "https://reqres.in/api/login",
+        method: "post",
         data: {
-          email: "eve.holt@reqres.in",
-          password: "cityslicka",
+          email,
+          password,
         },
       });
 
-      console.log(response.data);
-      console.log(data);
+      console.log(response.data.token);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
       toast.success("Logged in successfully");
       navigate("/users");
     } catch (error) {
@@ -47,6 +45,9 @@ export const AuthView = () => {
       toast.error("An error occurred while logging in");
     }
   };
+
+  localStorage.setItem("email", email);
+  localStorage.setItem("password", password);
 
   return (
     <>
@@ -69,6 +70,7 @@ export const AuthView = () => {
                 {...register("email")}
                 error={!!errors.email}
                 helperText={errors.email?.message}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 fullWidth
@@ -78,6 +80,9 @@ export const AuthView = () => {
                 {...register("password")}
                 error={!!errors.password}
                 helperText={errors.password?.message}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
               />
               <Button
                 variant="contained"

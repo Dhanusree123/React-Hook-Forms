@@ -2,14 +2,13 @@ import { Bedtime, WbSunny } from "@mui/icons-material";
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   IconButton,
   MenuItem,
   Popover,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ThemeProps = {
@@ -34,6 +33,21 @@ const Header = ({ mode, toggleTheme }: ThemeProps) => {
     navigate(path);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
+  const email = localStorage.getItem("email");
+  const password = localStorage.getItem("password");
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  });
+
   return (
     <>
       <Box
@@ -50,9 +64,6 @@ const Header = ({ mode, toggleTheme }: ThemeProps) => {
           <IconButton onClick={toggleTheme} color="inherit">
             {mode === "dark" ? <WbSunny /> : <Bedtime />}
           </IconButton>
-          <Button sx={{ mr: 2 }} size="large">
-            Logout
-          </Button>
           <IconButton onClick={handleOpenPopOver}>
             <Avatar alt="Dhanu Sree">D</Avatar>
           </IconButton>
@@ -61,9 +72,9 @@ const Header = ({ mode, toggleTheme }: ThemeProps) => {
         <Popover
           open={Boolean(open)}
           onClose={handleClosePopOver}
-          anchorEl={open}
+          // anchorEl={open}
           anchorOrigin={{
-            vertical: "bottom",
+            vertical: "top",
             horizontal: "right",
           }}
           transformOrigin={{
@@ -73,17 +84,17 @@ const Header = ({ mode, toggleTheme }: ThemeProps) => {
         >
           <Box sx={{ p: 2, minWidth: 200 }}>
             <Typography variant="subtitle2" noWrap>
-              Dhanusree
+              {email}
             </Typography>
-            <Typography variant="body2">interns@microfox.co</Typography>
+            <Typography variant="body2">{password}</Typography>
           </Box>
           <Divider sx={{ borderStyle: "dashed" }} />
           <Box sx={{ p: 1 }}>
-            <MenuItem onClick={() => handleClickItem("/users")}>Home</MenuItem>
+            <MenuItem onClick={() => handleClickItem("/users")}>Users</MenuItem>
             <MenuItem onClick={() => handleClickItem("/profile")}>
               Profile
             </MenuItem>
-            <MenuItem>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Box>
         </Popover>
       </Box>
