@@ -9,6 +9,7 @@ import { Toaster } from "sonner";
 import ProjectHomePage from "./pages/home/ProjectHomePage";
 import UsersPage from "./pages/users/UsersPage";
 import ProfilePage from "./pages/profile/ProfilePage";
+import UserAddPage from "./pages/users/UserAddPage";
 
 const App = () => {
   const [mode, setMode] = useState<"light" | "dark">("dark");
@@ -20,7 +21,7 @@ const App = () => {
   };
   return (
     <>
-      <Toaster richColors position="top-right" />
+      <Toaster richColors position="top-right" closeButton />
       <BrowserRouter>
         <ThemeProvider theme={getTheme(mode)}>
           <CssBaseline />
@@ -29,6 +30,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<ProjectHomePage />} />
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/users/new" element={<UserAddPage />} />
             <Route path="/users/:id/edit" element={<UserEditPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Routes>

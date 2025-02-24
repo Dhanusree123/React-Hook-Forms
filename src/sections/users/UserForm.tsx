@@ -14,12 +14,14 @@ import RHFTextField from "../../components/RHFTextField";
 import { useForm } from "react-hook-form";
 import {
   IUser,
+
   //   NewUserSchema,
   //   UpdateUserSchema,
   UserSchema,
 } from "../../types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
+import { toast } from "sonner";
 
 type Props = {
   onSubmit: (data: IUser) => void;
@@ -29,7 +31,7 @@ type Props = {
 };
 const UserForm = (props: Props) => {
   const { onSubmit, isEdit = false, user } = props;
-  //   const userSchema = isEdit ? UpdateUserSchema : NewUserSchema;
+  // const userSchema = isEdit ? UpdateUserSchema : NewUserSchema;
   const defaultValues = useMemo(
     () => ({
       id: user?.id ?? "",
@@ -57,7 +59,11 @@ const UserForm = (props: Props) => {
     });
   }, [defaultValues, reset]);
 
-  // console.log(errors);
+  if (errors) {
+    Object.values(errors).forEach((err) => {
+      toast.error(err.message);
+    });
+  }
   return (
     <Box
       sx={{
@@ -72,7 +78,7 @@ const UserForm = (props: Props) => {
             <Card sx={{ p: 4, borderRadius: 3, boxShadow: 3 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ mb: 3 }}>
-                  {isEdit ? "Edit" : " "} User
+                  {isEdit ? "Edit" : "Add"} User
                 </Typography>
 
                 <Grid container spacing={2}>
@@ -94,7 +100,13 @@ const UserForm = (props: Props) => {
                     label="Email"
                     placeholder="Email"
                     helperText={errors.email && errors.email.message}
-                    disabled
+                    disabled={isEdit}
+                  />
+                  <RHFTextField
+                    name="avatar"
+                    label="Avatar Url"
+                    placeholder="Avatar Url"
+                    helperText={errors.avatar && errors.avatar.message}
                   />
                 </Grid>
                 <Box
@@ -105,7 +117,7 @@ const UserForm = (props: Props) => {
                   }}
                 >
                   <Button type="submit" variant="contained">
-                    {isEdit ? "Update User" : "Save"}
+                    {isEdit ? "Update " : "Add "}User
                   </Button>
                 </Box>
               </CardContent>

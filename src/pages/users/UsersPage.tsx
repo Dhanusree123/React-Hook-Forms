@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   IconButton,
   Pagination,
@@ -13,7 +14,7 @@ import {
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Delete, Edit } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import { IUser } from "../../types/user";
 import CustomBreadCrumbs from "../../components/CustomBreadCrumbs";
 import { UserDelete } from "../../sections/users/UserDelete";
@@ -70,6 +71,9 @@ const UsersPage = () => {
     <>
       <Container maxWidth="lg">
         <CustomBreadCrumbs pathName="Users" />
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button onClick={() => navigate("/users/new")}>New User</Button>
+        </Box>
         <TableContainer sx={{ borderRadius: 2, boxShadow: 3, mt: 8 }}>
           <Table>
             <TableHead>
@@ -103,9 +107,7 @@ const UsersPage = () => {
                     <IconButton onClick={() => navigate(`/users/${m.id}/edit`)}>
                       <Edit />
                     </IconButton>
-                    <IconButton onClick={() => UserDelete({ id: m.id })}>
-                      <Delete />
-                    </IconButton>
+                    <UserDelete id={m.id} />
                   </TableCell>
                 </TableRow>
               ))}
