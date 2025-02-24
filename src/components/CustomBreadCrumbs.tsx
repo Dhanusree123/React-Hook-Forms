@@ -36,16 +36,18 @@ const CustomBreadCrumbs = (props: Props) => {
           >
             {pathName}
           </Link>
-          <Link
-            sx={{
-              textDecoration: "none",
-              fontSize: "md",
-              color: "inherit",
-            }}
-            href={subPath}
-          >
-            {subPathName}
-          </Link>
+          {subPathName && (
+            <Link
+              sx={{
+                textDecoration: "none",
+                fontSize: "md",
+                color: "inherit",
+              }}
+              href={subPath}
+            >
+              {subPathName}
+            </Link>
+          )}
         </Breadcrumbs>
       </Box>
     </>

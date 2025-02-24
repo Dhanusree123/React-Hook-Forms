@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import CustomBreadCrumbs from "../../components/CustomBreadCrumbs";
 import { IUser } from "../../types/user";
 import axios from "axios";
+import { Box } from "@mui/material";
 
 const UserAddPage = () => {
   const navigate = useNavigate();
-  const id = 1;
+  const id = 13;
 
   const [newUser, setNewUser] = useState<IUser | null>(null);
 
@@ -44,14 +45,14 @@ const UserAddPage = () => {
   }, [handleUserById]);
 
   return (
-    <>
+    <Box sx={{ ml: 7, mr: 7 }}>
       <CustomBreadCrumbs
         path="/users"
         pathName="Users"
         subPathName="Add User"
       />
       <UserForm onSubmit={handleSubmit} user={newUser} />
-    </>
+    </Box>
   );
 };
 

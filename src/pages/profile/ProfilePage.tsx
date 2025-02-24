@@ -13,15 +13,6 @@ const ProfilePage = () => {
   const email = watch("email");
   const password = localStorage.getItem("password");
 
-  function stringAvatar(name: string) {
-    const words = name.toUpperCase().split(" ");
-    const firstLetter = words[0]?.[0] || "";
-    const secondLetter = words[1]?.[0] || "";
-    return {
-      children: `${firstLetter}${secondLetter}`,
-    };
-  }
-
   return (
     <Box sx={{ ml: 9, mr: 9 }}>
       <CustomBreadCrumbs pathName="User Profile" />
