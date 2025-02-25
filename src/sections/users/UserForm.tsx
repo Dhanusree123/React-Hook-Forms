@@ -14,9 +14,8 @@ import RHFTextField from "../../components/RHFTextField";
 import { useForm } from "react-hook-form";
 import {
   IUser,
-
-  //   NewUserSchema,
-  //   UpdateUserSchema,
+  // NewUserSchema,
+  // UpdateUserSchema,
   UserSchema,
 } from "../../types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +23,7 @@ import { useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
 type Props = {
-  onSubmit: (data: IUser) => void;
+  onSubmit: (data: Partial<IUser>) => void;
   isEdit?: boolean;
   user: IUser | null;
   loading?: boolean;
