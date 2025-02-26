@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
 import useAxios from "../../../components/custom-axios/useAxios";
-import { User, UserResponse } from "../../../types/Users";
+import { IUser, UserResponse } from "../../../types/Users";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import {
+  Avatar,
   Box,
   Button,
-  Card,
-  CardContent,
-  CardMedia,
   Container,
-  Grid2,
+  IconButton,
   Pagination,
   Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
 } from "@mui/material";
+import { Edit } from "@mui/icons-material";
+import { DeleteUser } from "../delete-user";
+import CustomBreadCrumbs from "../../../components/custom-bread-crumbs/CustomBreadCrumbs";
 
 const UsersView = () => {
   const location = useLocation();
@@ -24,9 +30,9 @@ const UsersView = () => {
   const initialPage = Number(params.get("page")) || 1;
 
   const { response, error, loading, fetchData } = useAxios();
-  const [users, setUsers] = useState<User[]>([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(initialPage);
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [page, setPage] = useState(initialPage);
+  const [totalPages, setTotalPages] = useState(1);
 
   const token = localStorage.getItem("token");
 
@@ -38,7 +44,7 @@ const UsersView = () => {
       method: "GET",
       params: {
         page: page,
-        per_page: 4,
+        per_page: 6,
       },
     });
   };
@@ -51,32 +57,6 @@ const UsersView = () => {
     }
     setPage(value);
     navigate(`?${params.toString()}`);
-  };
-
-  const deleteUser = (id: number, event: React.MouseEvent) => {
-    event.stopPropagation();
-    const userToDelete = users.find((user) => user.id === id);
-    if (userToDelete) {
-      console.log("Deleted user:", userToDelete);
-      fetchData({
-        url: `/users/${id}`,
-        method: "DELETE",
-      }).then(() => {
-        const afterDeleteUsers = users.filter((user) => user.id !== id);
-        setUsers(afterDeleteUsers);
-        console.log("After Delete Users", afterDeleteUsers);
-        toast.success("User deleted successfully");
-      });
-    }
-  };
-
-  const handleUserClick = (user: User) => {
-    navigate(`/user/${user.id}/edit`);
-  };
-
-  const handleUserEmailClick = (user: User, event: React.MouseEvent) => {
-    event.stopPropagation();
-    navigate(`/user/${user.id}/edit-email`);
   };
 
   useEffect(() => {
@@ -101,52 +81,58 @@ const UsersView = () => {
   return (
     <>
       <Box sx={{ bgcolor: "background.default", py: 4 }}>
-        <Container>
+        <Container maxWidth="lg">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 3,
+            }}
+          >
+            <CustomBreadCrumbs path="/users" pathName="Users" />
+            <Button onClick={() => navigate("/user/new")} variant="contained">
+              Add User
+            </Button>
+          </Box>
           {loading && <Typography>Loading ...</Typography>}
           {error && <Typography>Error: {error}</Typography>}
-          {users && (
-            <Grid2 container spacing={2}>
-              {users.map((user) => (
-                <Grid2 size={{ xs: 12, md: 6 }} key={user.id}>
-                  <Card
-                    onClick={() => handleUserClick(user)}
-                    sx={{ marginTop: 3 }}
-                  >
-                    <Stack spacing={3} direction="row">
-                      <CardMedia
-                        component="img"
-                        src={user.avatar}
-                        alt={`${user.first_name} ${user.last_name}`}
-                        sx={{ maxWidth: 250, cursor: "pointer" }}
-                      />
-                      <Stack justifyContent="center">
-                        <CardContent>
-                          <Typography variant="h6">
-                            User: {user.first_name} {user.last_name}
-                          </Typography>
-                          <Typography
-                            variant="h6"
-                            onClick={(event) =>
-                              handleUserEmailClick(user, event)
-                            }
-                            sx={{ cursor: "pointer" }}
-                          >
-                            {user.email}
-                          </Typography>
-                          <Button
-                            onClick={(event) => deleteUser(user.id, event)}
-                          >
-                            Delete
-                          </Button>
-                        </CardContent>
-                      </Stack>
-                    </Stack>
-                  </Card>
-                </Grid2>
-              ))}
-            </Grid2>
-          )}
+          <TableContainer sx={{ borderRadius: 2, boxShadow: 3, mt: 8 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Id</TableCell>
+                  <TableCell>Image</TableCell>
+                  <TableCell>First Name</TableCell>
+                  <TableCell>Last Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {users.map((user, i) => (
+                  <TableRow key={i}>
+                    <TableCell>{user.id}</TableCell>
+                    <TableCell>
+                      <Avatar src={user.avatar} alt={user.first_name} />
+                    </TableCell>
+                    <TableCell>{user.first_name}</TableCell>
+                    <TableCell>{user.last_name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
 
+                    <TableCell sx={{ textAlign: "center" }}>
+                      <IconButton
+                        onClick={() => navigate(`/user/${user.id}/edit`)}
+                      >
+                        <Edit />
+                      </IconButton>
+                      <DeleteUser id={user.id.toString()} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
           <Stack alignItems="center" marginTop={3}>
             <Pagination
               count={totalPages}

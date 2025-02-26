@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Button,
   Typography,
@@ -8,21 +7,17 @@ import {
   Stack,
 } from "@mui/material";
 import { toast } from "sonner";
-import useAxios from "../../components/custom-axios/useAxios";
 import { FormProvider, useForm } from "react-hook-form";
-import { loginSchema, LoginSchema } from "../../types/Login";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ILoginSchema, loginSchema } from "../../types/Login";
 import RHFTextField from "../../components/hook-form/custom-text-field/rhf-text-field";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Login = () => {
-  const { response, error, loading, fetchData } = useAxios();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
 
-  const methods = useForm<LoginSchema>({
+  const methods = useForm<ILoginSchema>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -31,25 +26,25 @@ const Login = () => {
     formState: { errors },
   } = methods;
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: ILoginSchema) => {
     try {
-      await fetchData({
-        url: "/login",
-        method: "POST",
-        data: {
-          email,
-          password,
-        },
+      const response = await axios.post("https://reqres.in/api/login", {
+        email: data.email,
+        password: data.password,
       });
-      if (response) {
-        const token = (response as { token: string }).token;
-        console.log("Access Token:", token);
-        localStorage.setItem("token", token);
-        toast.success("Login successful");
-        navigate("/users");
+      const token = response.data.token;
+      console.log("Login successful", token);
+      localStorage.setItem("token", token);
+      localStorage.setItem("email", data.email);
+      toast.success("Successfully logged in");
+      navigate("/users");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error logging in", error.response?.data);
+        toast.error("Failed to login. Please check your credentials.");
+      } else {
+        console.error("Unexpected error", error);
       }
-    } catch (err) {
-      console.log(err);
     }
   };
 
@@ -72,12 +67,10 @@ const Login = () => {
                 <Typography variant="h4" gutterBottom>
                   Login
                 </Typography>
-                {error && <Typography>Error: {error}</Typography>}
                 <RHFTextField
                   name="email"
                   label="Email"
                   placeholder="xyz@example.com"
-                  onChange={(e) => setEmail(e.target.value)}
                   helperText={errors.email && errors.email.message}
                 />
 
@@ -86,16 +79,10 @@ const Login = () => {
                   label="Password"
                   type="password"
                   placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
                   helperText={errors.password && errors.password.message}
                 />
 
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disabled={loading}
-                >
+                <Button type="submit" variant="contained" color="primary">
                   Login
                 </Button>
               </Stack>

@@ -14,15 +14,12 @@ const useAxios = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const axiosInstance = axios.create({
-    baseURL: "https://reqres.in/api",
-  });
-
-  const fetchData = async ({ url, method, data, params }: Props) => {
+  const fetchData = async (props: Props) => {
+    const { url, method, data, params } = props;
     setLoading(true);
     try {
-      const result = await axiosInstance({
-        url,
+      const result = await axios({
+        url: `https://reqres.in/api${url}`,
         method,
         data,
         params,

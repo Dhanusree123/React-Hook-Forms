@@ -6,12 +6,8 @@ export type ProductProps = TextFieldProps & {
   name: string;
 };
 
-const RHFTextField = ({
-  name,
-  helperText,
-  type = "text",
-  ...other
-}: ProductProps) => {
+const RHFTextField = (props: ProductProps) => {
+  const { name, helperText, type = "text", ...other } = props;
   const { control, register } = useFormContext();
 
   return (

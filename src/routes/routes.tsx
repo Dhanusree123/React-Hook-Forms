@@ -6,7 +6,15 @@ const DashboardPage = lazy(() => import("../pages/dashboard/DashboardPage"));
 const LoginPage = lazy(() => import("../pages/auth/LoginPage"));
 const UsersPage = lazy(() => import("../pages/users/Users"));
 const EditUsersPage = lazy(() => import("../pages/users/EditUsersPage"));
-const EditEmailPage = lazy(() => import("../pages/users/EditEmailPage"));
+const ProfilePage = lazy(() => import("../pages/profile/ProfilePage"));
+const AddUsersPage = lazy(() => import("../pages/users/AddUsersPage"));
+const ResourcesPage = lazy(() => import("../pages/resources/ResourcesPage"));
+const AddResourcePage = lazy(
+  () => import("../sections/resources/add-resource")
+);
+const EditResourcePage = lazy(
+  () => import("../sections/resources/edit-resource")
+);
 
 const Router = () => {
   return useRoutes([
@@ -35,8 +43,24 @@ const Router = () => {
           element: <EditUsersPage />,
         },
         {
-          path: "user/:id/edit-email",
-          element: <EditEmailPage />,
+          path: "user/new",
+          element: <AddUsersPage />,
+        },
+        {
+          path: "profile",
+          element: <ProfilePage />,
+        },
+        {
+          path: "resources",
+          element: <ResourcesPage />,
+        },
+        {
+          path: "resource/new",
+          element: <AddResourcePage />,
+        },
+        {
+          path: "resource/:id/edit",
+          element: <EditResourcePage />,
         },
       ],
     },
