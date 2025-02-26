@@ -1,4 +1,13 @@
-import { Avatar, Box, Card, Tab, Tabs, TextField } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Tab,
+  Tabs,
+  TextField,
+} from "@mui/material";
 import CustomBreadCrumbs from "../../components/CustomBreadCrumbs";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid2";
@@ -38,61 +47,72 @@ const ProfilePage = () => {
         <Tab label="Change Password" />
       </Tabs>
 
-      {tabIndex === 0 && (
-        <Grid container spacing={4} alignItems="center" sx={{ mt: 10 }}>
-          <Grid
-            size={{ xs: 12, md: 4 }}
-            sx={{ display: "flex", justifyContent: "center" }}
+      <Grid
+        container
+        spacing={4}
+        alignItems="stretch"
+        justifyContent="center"
+        sx={{ mt: 4 }}
+      >
+        <Grid size={{ xs: 12, md: 4 }} display="flex">
+          <Card
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              p: 4,
+              alignItems: "center",
+              textAlign: "center",
+              flexGrow: 1,
+              width: "100%",
+            }}
           >
             <Avatar
               {...stringAvatar(email)}
-              sx={{ width: 156, height: 156, fontSize: 50 }}
+              sx={{ width: 176, height: 186, fontSize: 55 }}
             />
-          </Grid>
-
-          <Grid sx={{ xs: 12, md: 8 }}>
-            <Card sx={{ p: 3 }}>
-              <Box component="form">
-                <TextField
-                  {...register("email")}
-                  value={email}
-                  fullWidth
-                  label="Email"
-                  margin="normal"
-                />
-                <TextField
-                  type="password"
-                  value={password}
-                  disabled
-                  fullWidth
-                  label="Password"
-                  margin="normal"
-                />
-              </Box>
-            </Card>
-          </Grid>
+          </Card>
         </Grid>
-      )}
 
-      {tabIndex === 1 && (
-        <Grid container spacing={4} alignItems="center" sx={{ mt: 10 }}>
-          <Grid
-            size={{ xs: 12, md: 4 }}
-            sx={{ display: "flex", justifyContent: "center" }}
+        <Grid sx={{ xs: 12, md: 8 }} display="flex">
+          <Card
+            sx={{
+              p: 3,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              flexGrow: 1,
+            }}
           >
-            <Avatar
-              {...stringAvatar(email)}
-              sx={{ width: 156, height: 156, fontSize: 50 }}
-            />
-          </Grid>
-
-          <Grid sx={{ xs: 12, md: 8 }}>
-            <Card sx={{ p: 3 }}>
-              <ChangePasswordForm />
-            </Card>
-          </Grid>
+            <CardContent>
+              {tabIndex === 0 ? (
+                <Box component="form">
+                  <TextField
+                    {...register("email")}
+                    value={email}
+                    fullWidth
+                    label="Email"
+                    margin="normal"
+                  />
+                  <TextField
+                    type="password"
+                    value={password}
+                    disabled
+                    fullWidth
+                    label="Password"
+                    margin="normal"
+                  />
+                  <Button type="submit" variant="contained" fullWidth>
+                    Submit
+                  </Button>
+                </Box>
+              ) : (
+                <ChangePasswordForm />
+              )}
+            </CardContent>
+          </Card>
         </Grid>
-      )}
+      </Grid>
     </Box>
   );
 };

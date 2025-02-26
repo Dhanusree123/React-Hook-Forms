@@ -1,8 +1,8 @@
-import { Box, Card, TextField } from "@mui/material";
+import { Box, Button, Card, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useForm } from "react-hook-form";
 
-const ProfileForm = () => {
+const ChangePasswordForm = () => {
   const { register } = useForm({
     defaultValues: {
       currentPassword: "",
@@ -10,14 +10,24 @@ const ProfileForm = () => {
       confirmPassword: "",
     },
   });
+
   return (
     <>
-      <Grid sx={{ xs: 12, md: 8 }}>
-        <Card sx={{ p: 3 }}>
+      <Grid sx={{ xs: 12, md: 8 }} display="flex">
+        <Card
+          sx={{
+            p: 3,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            flexGrow: 1,
+            width: "100%",
+          }}
+        >
           <Box component="form">
             <TextField
               {...register("currentPassword")}
-              type="password"
+              type="text"
               fullWidth
               label="Email"
               margin="normal"
@@ -25,19 +35,20 @@ const ProfileForm = () => {
             <TextField
               {...register("newPassword")}
               type="password"
-              disabled
               fullWidth
-              label="Password"
+              label=" New Password"
               margin="normal"
             />
             <TextField
               {...register("confirmPassword")}
               type="password"
-              disabled
               fullWidth
-              label="Password"
+              label="Confirm Password"
               margin="normal"
             />
+            <Button type="submit" variant="contained" fullWidth>
+              Submit
+            </Button>
           </Box>
         </Card>
       </Grid>
@@ -45,4 +56,4 @@ const ProfileForm = () => {
   );
 };
 
-export default ProfileForm;
+export default ChangePasswordForm;

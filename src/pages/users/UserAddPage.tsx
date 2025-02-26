@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import UserForm from "../../sections/users/UserForm";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -9,40 +9,23 @@ import { Box } from "@mui/material";
 
 const UserAddPage = () => {
   const navigate = useNavigate();
-  const id = 13;
 
   const [newUser, setNewUser] = useState<IUser | null>(null);
 
-  const handleUserById = useCallback(async () => {
-    try {
-      const user = await axios.get(`https://reqres.in/api/users/${id}`, {
-        headers: {
-          Accept: "application/json",
-        },
-      });
-      setNewUser(user.data.data);
-    } catch (err) {
-      console.log(err);
-    }
-  }, [id]);
-
   const handleSubmit = async () => {
     try {
-      const userById = await axios.put(`https://reqres.in/api/users/${id}`, {
+      const userById = await axios.put(`https://reqres.in/api/users/{id}`, {
         headers: {
           Accept: "application/json",
         },
       });
+      setNewUser(newUser);
       toast.success(`Updated At ${userById.data.updatedAt}`);
       navigate("/users");
     } catch (err) {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    handleUserById();
-  }, [handleUserById]);
 
   return (
     <Box sx={{ ml: 7, mr: 7 }}>
