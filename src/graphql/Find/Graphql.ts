@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const graphqlData = `
+export const graphqlData = `
 query findBrands($skip:Int!, $limit: Int, $search: BaseSearch, $sort: BaseSort, $filter: BaseFilter){
   findBrands(skip: $skip, limit: $limit, search: $search, sort: $sort, filter: $filter){
     count

@@ -3,9 +3,10 @@ import { IProductFormData, productSchema } from "../../../types/Product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Paper, Stack, Switch, Typography } from "@mui/material";
 import TextFieldArea from "../../../components/TextFieldArea";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { generateSlug } from "./common";
 import ProductPreview from "./ProductPreview";
+import CustomAutocomplete from "../../../components/CustomAutoComplete";
 
 type DefaultProp = {
   productData: IProductFormData | null;
@@ -13,8 +14,25 @@ type DefaultProp = {
   loading?: boolean;
 };
 
-const ProductForm = ({ productData, isEdit, loading }: DefaultProp) => {
+type IFields = {
+  id: string;
+  title: string;
+  path?: string;
+  active: boolean;
+};
+
+type ISelected = {
+  brand: IFields | null;
+  store: IFields | null;
+};
+
+const ProductForm = (props: DefaultProp) => {
+  const { productData, isEdit, loading } = props;
   const product = productData;
+  const [selected, setSelected] = useState<ISelected>({
+    brand: null,
+    store: null,
+  });
 
   const defaultValues = useMemo(
     () => ({
@@ -65,6 +83,39 @@ const ProductForm = ({ productData, isEdit, loading }: DefaultProp) => {
   const dealPrice = watch("dealPrice");
   const listPrice = watch("listPrice");
   const images = watch("images");
+
+  const handleSelected = useCallback(
+    <T extends keyof ISelected>(key: T, value: ISelected[T]) => {
+      setSelected((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+
+      switch (key) {
+        case "brand":
+          setValue("brandId", value?.id ?? "", { shouldValidate: true });
+          break;
+        case "store":
+          setValue("storeId", value?.id ?? "", { shouldValidate: true });
+          break;
+        default:
+          break;
+      }
+    },
+    [setValue]
+  );
+
+  useEffect(() => {
+    if (product) {
+      const { brand, brandId, store, storeId } = product;
+      if (brand && brandId) {
+        handleSelected("brand", { id: brandId, title: brand, active: true });
+      }
+      if (store && storeId) {
+        handleSelected("store", { id: storeId, title: store, active: true });
+      }
+    }
+  }, [product, handleSelected]);
 
   useEffect(() => {
     setValue("slug", generateSlug(title));
@@ -148,6 +199,24 @@ const ProductForm = ({ productData, isEdit, loading }: DefaultProp) => {
                     label="Code"
                     placeholder="Code"
                     helperText={errors.code && errors.code.message}
+                  />
+
+                  <CustomAutocomplete
+                    label="Brand"
+                    selectedFilter={selected.brand}
+                    handleSelectedFilter={(value) =>
+                      handleSelected("brand", value)
+                    }
+                    error={errors.brandId}
+                  />
+
+                  <CustomAutocomplete
+                    label="Store"
+                    selectedFilter={selected.store}
+                    handleSelectedFilter={(value) =>
+                      handleSelected("store", value)
+                    }
+                    error={errors.storeId}
                   />
 
                   <TextFieldArea

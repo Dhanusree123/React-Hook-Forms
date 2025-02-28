@@ -21,7 +21,6 @@ const UseDraggable = (props: Props) => {
     position: "relative",
     transform: CSS.Transform.toString(transform),
     transition,
-    border: mode === "dark" ? "#374151" : "#d1d5db",
     borderRadius: 1,
     touchAction: "none",
     flexShrink: 0,
@@ -38,7 +37,13 @@ const UseDraggable = (props: Props) => {
     >
       <CustomImage
         src={thumbnail}
-        sx={{ width: "100%", objectFit: "contain", borderRadius: 1 }}
+        sx={{
+          width: "100%",
+          aspectRatio: "1 / 1",
+          background: mode === "dark" ? "#374151" : "#d1d5db",
+          objectFit: "contain",
+          borderRadius: 1,
+        }}
       />
     </Stack>
   );

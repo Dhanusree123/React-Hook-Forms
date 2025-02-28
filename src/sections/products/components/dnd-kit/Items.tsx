@@ -1,16 +1,33 @@
-import { Container, Box } from "@mui/material";
-import UseDroppable from "./useDroppable";
-import { useState } from "react";
+import React from "react";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
-const Items = () => {
-  const [items, setItems] = useState<string[]>(["1", "2", "3"]);
+interface Option {
+  label: string;
+}
+
+const options: Option[] = [
+  { label: "Option 1" },
+  { label: "Option 2" },
+  { label: "Option 3" },
+];
+
+function AutocompleteExample() {
   return (
-    <Container>
-      <Box>
-        <UseDroppable items={items} setItems={setItems} />
-      </Box>
-    </Container>
+    <Autocomplete
+      options={options}
+      getOptionLabel={(option: Option) => option.label}
+      renderInput={(params) => (
+        <TextField {...params} label="Type something" variant="outlined" />
+      )}
+      filterOptions={(options, state) =>
+        options.filter((option) =>
+          option.label.toLowerCase().includes(state.inputValue.toLowerCase())
+        )
+      }
+      openOnFocus={false}
+    />
   );
-};
+}
 
-export default Items;
+export default AutocompleteExample;

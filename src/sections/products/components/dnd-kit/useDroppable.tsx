@@ -90,7 +90,7 @@ const UseDroppable = <T extends CommonSlideProps>(props: Props<T>) => {
             );
           })}
         </SortableContext>
-        <Stack>
+        <Stack justifyContent="center" m={1}>
           <Button
             sx={{
               border: "2px dashed",

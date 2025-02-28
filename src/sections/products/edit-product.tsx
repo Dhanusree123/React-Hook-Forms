@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FindProducts } from "../../graphql/Find/FindProducts";
 import ProductForm from "./components/product-form";
 import { IProductFormData } from "../../types/Product";
+import ScraperForm from "./components/ScraperForm";
 
 const EditPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,6 +28,7 @@ const EditPage = () => {
     <Box sx={{ bgcolor: "background.default", py: 4 }}>
       <Container maxWidth="lg">
         <BreadCrumbs breadcrumbName="Edit Product" />
+        <ScraperForm productdata={productData} code={productData?.code ?? ""} />
         <ProductForm productData={productData} isEdit={true} />
       </Container>
     </Box>

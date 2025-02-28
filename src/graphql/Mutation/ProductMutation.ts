@@ -1,28 +1,17 @@
 import axios from "axios";
 import { useState } from "react";
-import { UpdateProductSchema } from "../../types/Schema";
+import { UpdateProductSchema } from "../../types/Product";
 
 const Mutation = `
     mutation updateProduct($id: string, $input: UpdateProductDto){
         mutation updateProduct(id: $id, input: $input){
-            id
-            active
-            code
-            dealPrice
-            description
-            expired
-            handPicked
-            listPrice
-            mrp
-            rating
-            reviews
-            title
+            ...ProductFragment
         }
     }
 `;
 
-const UpdateProduct = (id: string, active: boolean, code: string, description: string, expired: boolean, 
-    handPicked: boolean, listPrice: number, mrp:number, rating: number, reviews: number, title: string) => {
+const UpdateProduct = (id: string, input: {active: boolean, code: string, description: string, expired: boolean, 
+    handPicked: boolean, listPrice: number, mrp:number, rating: number, reviews: number, title: string}) => {
 
         const [response, setResponse] = useState<typeof UpdateProductSchema | null>(null);
     
@@ -35,19 +24,8 @@ const UpdateProduct = (id: string, active: boolean, code: string, description: s
         const res = await axios.post("https://test-api.nine.deals/graphql", {
             query: Mutation,
             variables: {
-                id: id,
-                input: {
-                    active,
-                    code,
-                    description,
-                    expired,
-                    handPicked,
-                    listPrice,
-                    mrp,
-                    rating,
-                    reviews,
-                    title
-                },
+                id,
+                input
             },
         },
         {
@@ -66,3 +44,16 @@ const UpdateProduct = (id: string, active: boolean, code: string, description: s
 };
 
 export default UpdateProduct
+
+/*id
+            active
+            code
+            dealPrice
+            description
+            expired
+            handPicked
+            listPrice
+            mrp
+            rating
+            reviews
+            title*/
