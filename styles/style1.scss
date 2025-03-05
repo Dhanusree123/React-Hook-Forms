@@ -1,0 +1,24 @@
+
+@import '_variables';
+
+.div-blue{
+    height: 400px;
+    background-color: rgb(94, 94, 231);
+    transform: scale(1,1.24);
+}
+.div-white-1{
+    background-color: $default-white;
+    transform: matrix( 1,0.15, 0, 1, 0, 0);
+    height: $default-height;
+    width: $default-width;
+}
+.div-white-2{
+    background-color: $default-white;
+    transform: matrix(1, -0.15, 0, 1, 0, 0);
+    height: $default-height;
+    width: $default-width;
+}
+.div-white{
+    display: flex;
+    justify-content: space-around;
+}

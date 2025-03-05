@@ -1,0 +1,242 @@
+@import "variables";
+@import "mixins";
+
+* {
+    margin:0;
+    padding: $padding-default;
+    box-sizing: border-box;
+    font-family: $font-default;
+}
+
+body {
+    background-color: $bg-color;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.header {
+    @include flex-center;
+    padding: 5px 5px;
+    width: 100%;
+    background-color: $bg-color;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: $primary-color;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+
+        li a {
+            text-decoration: none;
+            color: $primary-color;
+            font-weight: bold;
+            transition: color 0.3s;
+
+            &:hover {
+                color: $hover-color;
+            }
+        }
+    }
+
+    .icons {
+        @include flex-center($justify: flex-end);
+        gap: 15px;
+
+        i {
+            font-size: 20px;
+            cursor: pointer;
+            color: $primary-color;
+            transition: color 0.3s;
+
+            &:hover {
+                color: $hover-color;
+            }
+        }
+    }
+
+    .menu-toggle {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+    }
+}
+
+
+.main-content {
+    margin-top: 20px;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+
+.intro {
+    @include flex-center;
+    gap: $gap-default*2;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 20px;
+    text-align: left;
+}
+
+.intro-text,.intro-desc {
+    flex: 1;
+    min-width: 300px;
+}
+
+.intro-text h2 {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom:20px;
+}
+
+.intro-desc p {
+    font-size: 20px;
+    color: $text-color;
+    max-width: 800px;
+}
+
+
+.items {
+    @include flex-center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.item-box {
+    text-align: center;
+    font-size: 18px;
+    flex: 1 1 150px;
+
+    strong{
+        font-size: 24px;
+    }
+}
+
+
+.full-width-image img {
+    width: 100%;
+    height: 700px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 20px;
+    padding: $padding-default
+}
+
+
+.search-bar {
+    @include flex-center;
+    margin: 20px;
+    border: 1px solid $border-color;
+    margin-bottom: 20px;
+    padding: $padding-default   
+}
+
+
+.filters {
+    @include flex-center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    width: 100%;
+    padding: $padding-default;
+    gap:$gap-default
+}
+
+.filter-options span, .sort span {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px,1fr));
+    gap: $gap-default*2;
+    width: 100%;
+    padding: $padding-default;
+}
+
+.product {
+    text-align: center;
+    
+    img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 5px;
+        display: block;
+        padding-right: $padding-default ;
+        padding-left: $padding-default;
+    }
+    
+    h4{
+        margin: 10px;
+    }
+}
+
+
+.footer {
+    height: 50px;
+    background-color: $bg-color;
+    margin-top: 20px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    *{padding: 0;}
+    
+    .header {
+        // flex-direction: column;
+        // align-items: center;
+        // text-align: center;
+        // display: flex;
+        // justify-content: space-around;
+
+        .nav-links {
+            flex-direction: column;
+            display: none;
+            width: 100%;
+            padding-top: $padding-default;
+        }
+        .menu-toggle {
+            display: block;
+        }
+
+        .icons {
+            margin-top: 15px;
+        }
+
+        .nav-links.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    .intro {
+        flex-direction: column;
+        text-align: center;
+        padding: $padding-default;
+    }
+    .items {
+        flex-direction: column;
+        align-items: center;
+    }
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax( 400,1fr));
+        padding: 0 ;
+    }
+}
