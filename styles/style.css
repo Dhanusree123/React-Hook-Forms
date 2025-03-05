@@ -1,0 +1,160 @@
+* {
+  margin: 0px;
+  font-family: "Roboto";
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 150px 30px 150px;
+  border-bottom: 2px dashed rgba(0, 0, 0, 0.086);
+}
+
+.links-header {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+.btns-header {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+.btn-start {
+  background-color: #29b6f6;
+  padding: 10px;
+  border: none;
+  font-size: medium;
+  border-radius: 5px;
+}
+
+.btn-login, .btn-sales {
+  border: none;
+  background-color: white;
+  font-size: large;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  margin-top: 35px;
+  padding: 30px 150px 30px 150px;
+}
+
+.made-in-link-sec {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 20px;
+}
+.made-in-link-sec a {
+  color: #29b6f6;
+  text-decoration: none;
+}
+.made-in-link-sec i {
+  color: #29b6f6;
+  margin-right: 5px;
+}
+
+.design-craft-sec {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  position: sticky;
+}
+.design-craft-sec .jennifer-div h3 {
+  font-size: xx-large;
+}
+.design-craft-sec .jennifer-div h5 {
+  font-size: large;
+  margin-top: 5px;
+}
+.design-craft-sec .btn-search button {
+  font-size: 25px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.subscription-sec {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 100px;
+}
+.subscription-sec p {
+  font-size: larger;
+}
+.subscription-sec .btns-subscription {
+  display: flex;
+  flex-direction: column;
+  margin-right: 100px;
+  gap: 20px;
+  align-items: start;
+}
+.subscription-sec .btns-subscription button {
+  margin: 10px;
+  padding: 10px 25px;
+  font-size: large;
+}
+
+.btn-live {
+  border: 1px solid rgba(0, 0, 0, 0.153);
+  background-color: white;
+}
+
+.btn-agency, .btn-sub {
+  border: none;
+}
+
+.btn-copy {
+  border: none;
+  background-color: white;
+}
+
+.sites-by-jenni {
+  display: flex;
+  justify-content: space-between;
+}
+.sites-by-jenni h3 {
+  font-size: larger;
+}
+.sites-by-jenni button {
+  padding: 8px 15px;
+  font-size: large;
+  color: #29b6f6;
+  background-color: white;
+  border: none;
+}
+.sites-by-jenni img {
+  width: 500px;
+  height: 500px;
+}
+
+.grid-container1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+.grid-container1 .item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.grid-container1 .item img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.grid-container1 .item .details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+/*# sourceMappingURL=style.css.map */
