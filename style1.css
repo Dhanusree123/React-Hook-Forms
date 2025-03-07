@@ -1,0 +1,190 @@
+body {
+  background-color: #fff7f5;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+h1, h2 {
+  color: #2c2c2c;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #2c2c2c;
+  font-weight: bold;
+}
+
+.background-shapes .shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.steps-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.steps-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.step {
+  max-width: 300px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial {
+  text-align: center;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.clients {
+  text-align: center;
+}
+
+.logos img {
+  width: 100px;
+  margin: 10px;
+}
+
+.services-container {
+  max-width: 900px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.service-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  position: relative;
+  transition: transform 0.3s ease-in-out;
+}
+.service-card:hover {
+  transform: translateY(-5px);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.pink {
+  background-color: pink;
+}
+
+.orange {
+  background-color: orange;
+}
+
+.light-blue {
+  background-color: lightblue;
+}
+
+.pricing-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.pricing-plan {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.5;
+  z-index: 1;
+  animation: float 6s infinite alternate ease-in-out;
+}
+
+.circle-1 {
+  width: 150px;
+  height: 150px;
+  background-color: #ffcc80;
+  top: -50px;
+  left: -50px;
+}
+
+.circle-2 {
+  width: 200px;
+  height: 200px;
+  background-color: #ff8a80;
+  bottom: 100px;
+  right: -80px;
+}
+
+.circle-3 {
+  width: 180px;
+  height: 180px;
+  background-color: #80d6ff;
+  bottom: -90px;
+  left: 50px;
+}
+
+html, body {
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-y: auto; /* Ensure vertical scrolling */
+  min-height: 100vh; /* Ensure the page takes up the full height */
+}
+
+.container, .steps-section, .testimonial, .clients, .services-container, .pricing-container {
+  padding: 50px 20px; /* Add padding to prevent content cutoff */
+  box-sizing: border-box; /* Ensure padding is included in element size */
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(20px);
+  }
+}
+
+/*# sourceMappingURL=style1.css.map */
