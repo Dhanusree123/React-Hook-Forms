@@ -1,0 +1,111 @@
+//font-family
+@import url('https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap');
+
+//variables
+@import "./variables";
+
+//Mixins
+@import "./mixins";
+
+.section4 {
+    background-color: $secondary-background;
+    padding: 100px 0;
+    .section4-heading {
+        text-align: center;
+        h2{
+            font-size: 47px;
+            line-height: 71px;
+            color: $white;
+        }
+    }
+
+    .section4-cards{
+        @include flex($justifyContent:center, $alignItems: center);
+        flex-wrap: wrap;
+        gap: 3rem;
+        margin-top: 3rem;
+        .section4-smallcard {
+            height: 725px;
+            width: 562.7px;
+            padding: 70px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid #29513e;
+            color: $white;
+            h5{
+                font-size: 30px;
+                letter-spacing: -0.5;
+                line-height: 38px;
+            }
+            h2 {
+                font-size: 47px;
+                line-height: 71px;
+                margin-top: 30px;
+            }
+            .section4-para{
+                font-size: 18px;
+                line-height: 24px;
+                color: #BABABA;
+                font-weight: 500;
+            }
+            .section4-insidecard {
+                font-size: 18px;
+                line-height: 32px;
+                margin-top: 50px;
+                div {
+                    @include flex($alignItems: center);
+                    gap: 7px;
+                    margin-bottom: 10px;
+                    i {
+                        color: #02B865;
+                        font-size: 25px;
+                    }
+                }
+            }
+            button {
+                &:hover {
+                    background-color: $white;
+                    color: $primary-textcolor;
+                    cursor: pointer;
+                }
+            }
+        }
+        .smallcard {
+            background: $white;
+            color: #1A1A1A;
+            .smallcard-para {
+                color: #767676;
+                font-size: 18px;
+                line-height: 24px;
+                font-weight: 500;
+            }
+            .section4-insidecard div i{
+                color: black;
+            }
+
+            button {
+                &:hover{
+                    background-color: #02B865;
+                    color: white;
+                }
+            }
+        }
+    }
+    .section4-smallcardpara {
+        font-size: 20px;
+        line-height: 20px;
+        text-align: center;
+        font-weight: bold;
+        margin-top: 25px;
+    }
+
+    .section4-paragraph {
+        text-align: center;
+        margin-top: 60px;
+        color: $white;
+        p{
+            font-size: 18px;
+            line-height: 32px;
+        }
+    }
+}

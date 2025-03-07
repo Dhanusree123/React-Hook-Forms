@@ -1,0 +1,43 @@
+@mixin smallScreen {
+    @media (max-width: 600px) {
+        @content;
+    }
+}
+
+@mixin mediumScreens {
+    @media (min-width: 601px) and (max-width: 767px) {
+        @content;
+    }
+}
+
+@mixin largeScreens {
+    @media (min-width: 768px) and (max-width: 991px) {
+        @content;
+    }
+}
+
+@mixin smallAndMediumScreens {
+    @include smallScreen {
+        @content;
+    }
+    @include mediumScreens {
+        @content;
+    }
+    @include largeScreens {
+        @content;
+    }
+}
+
+@mixin flex($direction: "null", $justifyContent: "null", $alignItems: "null" ) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justifyContent;
+    align-items: $alignItems;
+}
+
+@mixin section1Image {
+    display: block;
+    height: auto;
+    width: 100%;
+    order: 1;
+}

@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap");
+.section4 {
+  background-color: #00341d;
+  padding: 100px 0;
+}
+.section4 .section4-heading {
+  text-align: center;
+}
+.section4 .section4-heading h2 {
+  font-size: 47px;
+  line-height: 71px;
+  color: #ffffff;
+}
+.section4 .section4-cards {
+  display: flex;
+  flex-direction: "null";
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+.section4 .section4-cards .section4-smallcard {
+  height: 725px;
+  width: 562.7px;
+  padding: 70px;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #29513e;
+  color: #ffffff;
+}
+.section4 .section4-cards .section4-smallcard h5 {
+  font-size: 30px;
+  letter-spacing: -0.5;
+  line-height: 38px;
+}
+.section4 .section4-cards .section4-smallcard h2 {
+  font-size: 47px;
+  line-height: 71px;
+  margin-top: 30px;
+}
+.section4 .section4-cards .section4-smallcard .section4-para {
+  font-size: 18px;
+  line-height: 24px;
+  color: #BABABA;
+  font-weight: 500;
+}
+.section4 .section4-cards .section4-smallcard .section4-insidecard {
+  font-size: 18px;
+  line-height: 32px;
+  margin-top: 50px;
+}
+.section4 .section4-cards .section4-smallcard .section4-insidecard div {
+  display: flex;
+  flex-direction: "null";
+  justify-content: "null";
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+.section4 .section4-cards .section4-smallcard .section4-insidecard div i {
+  color: #02B865;
+  font-size: 25px;
+}
+.section4 .section4-cards .section4-smallcard button:hover {
+  background-color: #ffffff;
+  color: #006034;
+  cursor: pointer;
+}
+.section4 .section4-cards .smallcard {
+  background: #ffffff;
+  color: #1A1A1A;
+}
+.section4 .section4-cards .smallcard .smallcard-para {
+  color: #767676;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 500;
+}
+.section4 .section4-cards .smallcard .section4-insidecard div i {
+  color: black;
+}
+.section4 .section4-cards .smallcard button:hover {
+  background-color: #02B865;
+  color: white;
+}
+.section4 .section4-smallcardpara {
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 25px;
+}
+.section4 .section4-paragraph {
+  text-align: center;
+  margin-top: 60px;
+  color: #ffffff;
+}
+.section4 .section4-paragraph p {
+  font-size: 18px;
+  line-height: 32px;
+}/*# sourceMappingURL=section4.css.map */

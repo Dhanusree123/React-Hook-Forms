@@ -1,0 +1,576 @@
+//font-family
+@import url('https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap');
+
+//variables
+@import "./variables";
+
+//Mixins
+@import "./mixins";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Rethink Sans", sans-serif;
+}
+
+.container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+body {
+    font-family: "Rethink Sans", sans-serif;
+}
+
+//button
+.btn {
+    padding: 16px 28px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: $transition;
+    border: none;
+    font-weight: bold;
+
+    &-primary {
+        background-color: $primary-color;
+        color: $white;
+
+        &:hover {
+            background-color: $white;
+            color: $primary-color;
+        }
+    }
+
+    &-secondary {
+        font-size: 16px;
+        padding: 24px 40px;
+        border-radius: 40px;
+        background: transparent;
+        border-color: black;
+
+        &:hover {
+            background-color: black;
+            color: $white;
+        }
+    }
+
+    &-third {
+        font-size: 16px;
+        width: 402.7px;
+        padding: 15px 40px;
+        border-radius: 42px;
+        background-color: $primary-textcolor;
+        color: $white;
+        border: none;
+        font-weight: bold;
+        margin-top: 30px;
+    }
+}
+
+.section1 {
+    background-color: $primary-background;
+    height: 80vh;
+    background-size: cover;
+
+    @include smallAndMediumScreens {
+        height: auto;
+        width: 100%;
+    }
+}
+
+//navbar
+.navbar {
+    padding: 10px 40px;
+    height: 70px;
+
+    .container {
+        @include flex($justifyContent: space-between, $alignItems: center);
+    }
+
+    .logo {
+        height: 118px;
+        width: 219px;
+        @include flex($alignItems: center);
+    }
+    .nav-links {
+        @include flex($alignItems: center);
+        gap: 50px;
+
+        .nav-links-names {
+            display: flex;
+            gap: 50px;
+    
+            li {
+                list-style-type: none;
+    
+                a {
+                    text-decoration: none;
+                    color: #1A1A1A;
+                    opacity: 0.7;
+                    transition: $transition;
+
+                    &:hover {
+                        opacity: 1;
+                        color: black;
+                    }
+                }
+
+                .agencies {
+                    font-weight: bold;
+                }
+            }
+        }
+    
+        @include smallAndMediumScreens {
+            display: none;
+    
+            &.active{
+                @include flex($direction: column);
+                position: absolute;
+                top: 90px;
+                left: 0;
+                right: 0;
+                text-align: center;
+                background: $primary-background;
+                height: 100vh;
+                background-size: cover;
+                padding: 1rem 0;
+
+                .nav-links-names {
+                    @include flex($direction: column);
+                    gap: 2.5rem;
+                }
+            }
+        }
+    }
+    .menu-icon {
+        color: $primary-textcolor;
+        font-size: 23px;
+        display: none;
+
+        @include smallAndMediumScreens {
+            display: block;
+        }
+    } 
+}
+
+.section1-container {
+    padding: 4rem 0;
+
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-items: center;
+        align-items: center;
+
+        @include smallAndMediumScreens {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+    }
+    .section1-box {
+        height: 348px;
+        width: 670px;
+        padding: 50px 0;
+        line-height: 83px;
+        h1 {
+            font-size: 73px;
+            letter-spacing: -1.5px;
+            font-weight: 500;
+            line-height: 83px;
+            color: $primary-textcolor;
+
+            @include smallAndMediumScreens {
+                font-size: 40px;
+                line-height: 50px;
+            }
+        }
+        p {
+            font-size: 23px;
+            line-height: 32px;
+            color: $secondary-textcolor;
+        }
+
+        @include smallAndMediumScreens {
+            height: auto;
+            width: 100%;
+        }
+    }
+    .section1-image {
+        display: none;
+
+        @include smallScreen {
+            @include section1Image;
+            order: -1;
+        }
+
+        @include mediumScreens {
+            @include section1Image;
+            order: -1;
+        }
+
+        @include largeScreens {
+            @include section1Image;
+            order: -1;
+        }
+
+        @media (min-width: 992px) {
+            @include section1Image;
+        }
+
+        img {
+            height: 602px;
+            width: 605px;
+        }
+    }
+}
+
+.section2 {
+    background: $secondary-background;
+    height: 110vh;
+
+    @include smallAndMediumScreens {
+        height: auto;
+        width: 100%;
+        padding-bottom: 50px;
+    }
+
+    .container {
+        @include flex($direction: column, $justifyContent: center, $alignItems: center);
+    }
+
+    .section2-headingcard {
+        font-size: 30px;
+        font-weight: 500;
+        line-height: 71px;
+        color: #f7f5f0;
+        width: 740px;
+        justify-self: center;
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .section2-groupcards {
+        @include flex($justifyContent: center, $alignItems: center);
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-top: 100px;
+
+        @include smallAndMediumScreens {
+            text-align: center;
+        }
+
+        .section2-card {
+            height: 586.8px;
+            width: 426.6px;
+            padding: 60px 44px;
+            background: $white;
+            border-radius: 30px;
+
+            @include smallAndMediumScreens {
+                height: auto;
+                width: 100%;
+            }
+    
+            div {
+                height: 154px;
+                width: 338.6px;
+
+                @include smallAndMediumScreens {
+                    @include flex($direction: column);
+                    justify-self: center;
+                }
+    
+                h3 {
+                    width: 250px;
+                    font-size: 36px;
+                    font-weight: 500;
+                    letter-spacing: -2;
+                    line-height: 43px;
+
+                    @include smallAndMediumScreens {
+                        width: 100%;
+                    }
+                }
+                p {
+                    margin-top: 15px;
+                }
+            }
+            img {
+                height: 287.4px;
+                width: 337px;
+                margin-top: 20px;
+            }
+        }
+    }
+}
+
+.section3 {
+    background-size: cover;
+    background-color: $primary-background;
+
+    @include smallAndMediumScreens {
+        width: 100%;
+        padding-bottom: 10px;
+    }
+
+    .container {
+        @include flex($direction: column, $justifyContent: center);
+    }
+
+    .section3-heading {
+        height: 142px;
+        width: 620px;
+        font-size: 47px;
+        font-weight: 500;
+        color: $primary-textcolor;
+        align-self: center;
+        text-align: center;
+        line-height: 71px;
+        margin-top: 60px;
+
+        @include smallAndMediumScreens {
+            height: auto;
+            width: 100%;
+        }
+    }
+
+    .section3-card {
+        height: 596px;
+        width: 1340px;
+        @include flex($justifyContent: center, $alignItems: center);
+        align-self: center;
+        flex-wrap: wrap;
+        gap: 7.5rem;
+        margin-top: 50px;
+
+        @include smallAndMediumScreens {
+            height: auto;
+            width: 100%;
+        }
+
+        .section3-smallcard {
+            height: 236px;
+            width: 364px;
+            padding: 10px 0;
+
+            @include smallScreen {
+                height: auto;
+                width: 100%;
+                padding: 0;
+            }
+    
+            .section3-icons {
+                background-color: $orange;
+                height: 70px;
+                width: 70px;
+                border-radius: 20px;
+                box-shadow: rgba(26, 26, 26, 0.25) 0px 39px 36px -23px;
+                @include flex($justifyContent: center, $alignItems: center);
+                
+                img {
+                    height: 38px;
+                    width: 38px;
+                }
+            }
+    
+            h4 {
+                font-size: 34px;
+                font-weight: 500;
+                letter-spacing: -1.5px;
+                line-height: 44px;
+                color: $secondary-textcolor;
+                margin-top: 20px;        
+            }
+    
+            p {
+                font-size: 18px;
+                line-height: 32px;
+                color: #484848;
+                margin-top: 10px;
+            }
+        }
+    }
+
+    .section3-greencard {
+        background-color: #032817;
+        height: 636px;
+        width: 1340px;
+        border-radius: 50px;
+        text-align: center;
+        padding: 50px 0;
+        margin-top: 120px;
+
+        @include smallAndMediumScreens {
+            height: auto;
+            width: 100%;
+            padding: 70px 40px;
+            @include flex($direction: column, $justifyContent: center, $alignItems: center);
+        }
+
+        .section3-quotes {
+            font-size: 7rem;
+            color: $orange;
+
+            @include smallAndMediumScreens {
+                font-size: 5rem;
+            }
+        }
+        .section3-quotespara {
+            font-size: 47px;
+            line-height: 67px;
+            letter-spacing: -1;
+            color: $white;
+            height: 192px;
+            width: 889px;
+            justify-self: center;
+
+            @include smallAndMediumScreens {
+                font-size: 27px;
+                line-height: 41px;
+                height: auto;
+                width: 100%;
+            }
+        }
+        .magneti {
+            height: 60px;
+            width: 218px;
+            margin-top: 100px;
+
+            @include smallAndMediumScreens {
+                margin-top: 40px;
+            }
+        }
+    }
+
+    .section3-fullsupport {
+        margin-top: 150px;
+        h2{
+            height: 142px;
+            width: 740px;
+            font-size: 47px;
+        }
+
+        .fullsupport-links{
+            margin-top: 100px;
+            .fullsupport-link-names{
+                letter-spacing: -2;
+                line-height: 120px;
+                color: $primary-textcolor;
+                font-weight: 500;
+                p {
+                    font-size: 60px;
+                }
+
+                &:hover {
+                color: $primary-textcolor;
+                @include flex($justifyContent: space-evenly);
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: -5px;
+                    width: 100%;
+                    height: 2px;
+                }
+
+                .image {
+                    display: block;
+                }
+            }
+
+                .image {
+                    display: none;
+                    width: 100px;
+                    height: 100px;
+                    background-size: cover;
+                    margin-left: 10px;
+                }
+            }
+            hr {
+                color: #E4E4E4;
+                height: 1px;
+                width: 1240px;
+            }
+        }
+    }
+    @keyframes lineEffect {
+        from {
+            width: 0;
+        }
+        to {
+            width: 100%;
+        }
+    }
+
+    .section3-explore{
+        .explore-heading {
+            line-height: 71px;
+            text-align: center;
+            margin-top: 150px;
+            color: $primary-textcolor;
+            h2 {
+                font-size: 47px;
+            }
+        }
+
+        .explore-images {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-auto-rows: 200px;
+            grid-auto-flow: dense;
+
+            .explore-tall{
+                height: 703.5px;
+                width: 603px;
+            }
+
+            .explore-wide {
+                height: 462.297px;
+                width: 603px;
+            }
+
+            .wide {
+                grid-column: span 2;
+                grid-row: span 3;
+            }
+            .tall {
+                grid-row: span 4;
+                grid-column: span 2;
+            }
+
+            .tall1{
+                grid-row: span 4;
+                grid-column: span 2;
+            }
+
+            .wide1{
+                grid-column: span 2;
+            }
+            >div{
+                @include flex($direction: column);
+            } 
+            >div>img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50px;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+                vertical-align: middle;
+                display: inline-block;
+            }
+        }
+        .showmore-button {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+    }
+}
