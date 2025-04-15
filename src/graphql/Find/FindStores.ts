@@ -33,6 +33,7 @@ export const FindStores = async (skip: number, limit?: number, search?: {title: 
       },
     });
     const data = await response.data;
+    console.log("Find Stores", data);
     return data.data.findStores;
   } catch (err) {
     console.error(err);

@@ -30,6 +30,7 @@ export const Graphql = async (skip: number, limit?: number, search?: {title: str
       },
     });
     const data = await response.data;
+    console.log("Find Brands", data);
     return data.data.findBrands;
   } catch (err) {
     console.error(err);

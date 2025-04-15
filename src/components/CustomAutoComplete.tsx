@@ -101,7 +101,7 @@ const CustomAutocomplete = <T extends IAutocompleteFields>(props: Props<T>) => {
     if (debouncedSearchTerm && fetchData) {
       setIsLoading(true);
       try {
-        const data = await fetchData(0, 10, { title: debouncedSearchTerm });
+        const data = await fetchData(0);
         if (label === "Brand") {
           setOptions(data.brands || []);
         } else if (label === "Store") {
